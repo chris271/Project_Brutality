@@ -72,6 +72,7 @@ Class PB_Cacodemon : PB_Monster// Replaces DoomImp
 		+DONTHARMSPECIES;
 		+DONTHARMCLASS;
 		+NOINFIGHTSPECIES;
+		+FORCEXYBILLBOARD;
 	}
 	
 	States
