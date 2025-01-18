@@ -1,6 +1,29 @@
 class PB_Health : Health abstract
 {
 	mixin PB_BetterPickupSound;
+	int cap,ca,res; string msg;
+	override bool TryPickup(in out actor toucher)
+	{
+		int aa = self.amount*G_SkillPropertyFloat(SKILLP_HealthFactor);
+		if(toucher && toucher is "PlayerPawn")
+		{
+			cap = Max(MaxAmount,toucher.GetMaxHealth(true));
+			ca = toucher.health;
+		}
+		res = cap-ca;
+		toucher.A_Log("TryPickup");
+		A_Log("TryPickup");
+		if(res>=aa){ res = aa;}
+		return Super.TryPickup(toucher);
+	}
+	override string PickupMessage(){
+		msg = Super.PickupMessage();//StringTable.Localize(Super.PickupMessage());
+		A_Log("PickupMessage");
+		if( msg.IndexOf("%a") != -1 ){
+			msg.Replace("%a", String.Format("%d", res));
+		}
+		return msg;
+	}
 }
 
 class PB_Armor : BasicArmorPickup abstract
