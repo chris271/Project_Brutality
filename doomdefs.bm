@@ -87,7 +87,7 @@
 #include BMAP/Draugr.txt
 
 //Archvile
-#include BMAP/Monsters/Archviles/Archvile.txt
+#include BMAP/Monsters/Archvile/Archvile.txt
 
 //Mastermind
 
