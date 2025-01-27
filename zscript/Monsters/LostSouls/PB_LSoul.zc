@@ -27,16 +27,17 @@ Class PB_LSoul : PB_Monster{
 		}
 		super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
-	/*
-	override bool CanCollideWith(Actor other, bool passive){
-		if( isOrbiting() && other is "PB_LSoul" && other.bSkullfly){return false;}
-		return super.CanCollideWith(other, passive);
+	override int DamageMobj (Actor inflictor, Actor source, int damage, Name mod, int flags, double angle){
+		if(isOrbiting()){damage *= 1/2;}
+		return super.DamageMobj(inflictor, source, damage, mod, flags, angle);
 	}
-	*/
 	override bool CanCollideWith(Actor other, bool passive){
 		let otherActor = PB_LSoul(other);
-		if( otherActor  && bSKULLFLY){
-			if(otherActor.isOrbiting()) return false;
+		if( otherActor && 
+			(bSKULLFLY && otherActor.isOrbiting() || 
+			isOrbiting() && otherActor.bSKULLFLY) && 
+			otherActor.master && master && otherActor.master == master ){
+			return false;
 		}
 		return super.CanCollideWith(other, passive);
 	}
