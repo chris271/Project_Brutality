@@ -190,11 +190,13 @@ Class PB_Elemental : PB_Monster{
 			// make the PE nonsolid for the check and the LS non-teleporting so that P_TryMove doesn't do unwanted things.
 			bSolid = false;
 			other.bNoTeleport = true;
+			FCheckPosition tm;
 			for (int i = 0; i < steps; i++)
 			{
 				Vector2 ptry = other.pos.xy + stepmove;
 				double oldangle = other.angle;
-				if (!other.TryMove(ptry, 0))
+				bool DontDestroy = other.TryMove(ptry, 0);
+				if (!DontDestroy)
 				{
 					// kill it immediately
 					other.ClearCounters();
@@ -223,7 +225,7 @@ Class PB_Elemental : PB_Monster{
 
 			// [RH] Lost souls hate the same things as their pain elementals
 			other.CopyFriendliness (self, !(flags & PAF_NOTARGET));
-
+			other.master = self;
 			if (!(flags & PAF_NOSKULLATTACK))
 			{
 				other.A_SkullAttack();
