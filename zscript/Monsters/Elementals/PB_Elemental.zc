@@ -392,6 +392,7 @@ Class PB_Elemental : PB_Monster{
 
 Class LaunchedLostSoul : Actor{
 	int user_ang1;
+	int user_effectang1;
 	int user_radius1;
 	Default{
 	//Game Doom
@@ -431,11 +432,18 @@ Class LaunchedLostSoul : Actor{
 	States{
 	Spawn:
 		LSOL B 1 BRIGHT {
-			for(int i = 0; i<2; i++){A_CustomMissile("SoulTrails", 24, 0, random (0, 360), 2, random (0, 160));}
+			A_SetUserVar("user_radius1",26);
 			A_SpawnItem("RedFlareMedium", 0, 24);
 			A_SetRoll(user_ang1*7.5);
 			A_SetUserVar("user_ang1",user_ang1+3);
+			//A_SetUserVar("user_effectang1",user_effectang1-3);
 			A_SeekerMissile(10,10);
+			for(int i = 0; i<2; i++){
+				A_CustomMissile("SoulTrails", 24, 0, random (0, 360), 2, random (0, 160));
+				A_SpawnItemEx("SoulTrails",0,(user_radius1*sin(-user_ang1*(7.5)+30)),(user_radius1*cos(-user_ang1*(7.5)+30))+height/2,0,0,0,0,0,0);
+				A_SpawnItemEx("SoulTrails",0,(user_radius1*sin(-user_ang1*(7.5)+150)),(user_radius1*cos(-user_ang1*(7.5)+150))+height/2,0,0,0,0,0,0);
+				A_SpawnItemEx("SoulTrails",0,(user_radius1*sin(-user_ang1*(7.5)+270)),(user_radius1*cos(-user_ang1*(7.5)+270))+height/2,0,0,0,0,0,0);
+			}
 		}
 		Loop;
 	Death:
@@ -482,11 +490,17 @@ Class LaunchedPhantasm : LaunchedLostSoul{
 	States{
 	Spawn:
 		STLK B 1 BRIGHT {
+			A_SetUserVar("user_radius1",26);
 			A_SpawnItem("GreenFlareSmall", 0, 24);
-			A_CustomMissile("RealFlameTrailsGreen", 24, 0, random (0, 360), 2, random (0, 160));
 			A_SetRoll(user_ang1*7.5);
 			A_SetUserVar("user_ang1",user_ang1+3);
 			A_SeekerMissile(10,10);
+			for(int i = 0; i<2; i++){
+				A_CustomMissile("PhantasmTrails", 24, 0, random (0, 360), 2, random (0, 160));
+				A_SpawnItemEx("PhantasmTrails",0,(user_radius1*sin(-user_ang1*(7.5)+30)),(user_radius1*cos(-user_ang1*(7.5)+30))+height/2,0,0,0,0,0,0);
+				A_SpawnItemEx("PhantasmTrails",0,(user_radius1*sin(-user_ang1*(7.5)+150)),(user_radius1*cos(-user_ang1*(7.5)+150))+height/2,0,0,0,0,0,0);
+				A_SpawnItemEx("PhantasmTrails",0,(user_radius1*sin(-user_ang1*(7.5)+270)),(user_radius1*cos(-user_ang1*(7.5)+270))+height/2,0,0,0,0,0,0);
+			}
 		}
 		Loop;
 	Death:
