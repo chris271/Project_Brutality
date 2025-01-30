@@ -159,6 +159,7 @@ const MAXITERATIONS = 32676;
 #include "zscript/Decorations/PBDeadGeneric.zc"
 
 #include "zscript/Monsters/PBMonster.zsc"
+#include "zscript/Monsters/Archvile/PBMonster_ArchvileExtend.zsc"
 #include "zscript/Monsters/PBMonsterAmmo.zsc"
 
 #include "zscript/Monsters/Special/BossBrain.zc"

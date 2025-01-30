@@ -1,0 +1,35 @@
+//[Pop] Archvile need extra sped treatment. why? i dont fucking know
+//but trying to show A_VileChase into A_SmartChase in any way has always
+//give me nothing but jank and problems in the past. So! Sectioning off
+//a separate file to write the A_SmartVileChase function and any other extra
+//functions that are Archvile related. these can then still be used on *non*
+//Archvile monsters too since its an extend of PB_Monster, but its mainly
+//going to be for Archviles. DO NOT put the actual monster code in this file.
+//just make a separate file, preferrable copy like, the Zombieman ZS file as a
+//template or something, gut it out and work from there.
+
+extend class PB_Monster
+{
+	/*[Pop] Notes on chase functions:
+	- A_VileChase is vanilla Archvile functionality, as it has its own funciton
+	apparently
+	- According to the ZDooM Wiki, its superceded by A_Chase having the
+	CHF_RESURRECT flag available.
+	- Also as state by the wiki, the 'Heal' state is the state called when an
+	enemy attempts to resurrect another enemy. Supposedly this is 'if defined'
+	as well, so MAKE SURE THERES A HEAL STATE.
+	- Fourthly, any enemy that needs to be revivable needs to have a 'Raise'
+	state, something severely lacking in BD code monster stuff, and something
+	we need to take account for. This is probably why Archviles in BD and PB
+	prior felt so aggressive; they were unable to actually resurrect 90% of
+	corpses, resulting in them mostly just going after and attacking the player.
+	- Fifth, as much as I have tried in the past to finnegal the aformentioned
+	flag of A_Chase, or even A_VileChase, into A_SmartChase, I have still
+	yet to get it to work properly, so this will probably be THE most complex
+	and jank/hacky part of PB being rewritten to date as well as into the future.
+	*/
+	void A_SmartVileChase(statelabel s1 = "_a_chase_default", statelabel s2 = "_a_chase_default", int flags = 0)
+	{
+		A_VileChase();
+	}
+}
