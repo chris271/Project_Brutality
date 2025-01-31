@@ -2844,8 +2844,9 @@ class DEDashJump : Inventory
 			if( dashCharge == DASHMAXCHARGE )
 			{
 				waiting = false;
-				if (!(level.MapName == "TITLEMAP")) // Just don't play this on TitleMaps it's unnecessary.
+				if (level.MapName != "TITLEMAP") // Just don't play this on TitleMaps it's unnecessary.
 					owner.A_StartSound( "player/dashready", 69, CHANF_OVERLAP );
+					
 				TakeInventory( "EvadeCheck", 2 );
 				TakeInventory( "EvadeHold", 2 );
 			}
