@@ -2012,7 +2012,7 @@ class PB_BrainsImpHeadPiece: PB_Brains4 //White skinned piece 1
 	Default
 	{
 		Speed 2;
-		-DOOMBOUNCE;
+		-BOUNCEONWALLS; -BOUNCEONFLOORS; -ALLOWBOUNCEONACTORS; -BOUNCEAUTOOFF;
 		Scale 1.0;
 	}
     States
@@ -2907,7 +2907,7 @@ class PB_TeethNoBounce: PB_Teeth
 {
 	Default
 	{
-		-DOOMBOUNCE;
+		-BOUNCEONWALLS; -BOUNCEONFLOORS; -ALLOWBOUNCEONACTORS; -BOUNCEAUTOOFF;
 	}
 }
 
@@ -3792,6 +3792,7 @@ class PB_SmearingXDeath2 : PB_GibBase
 		Speed 10;
 		Mass 1;
 		Scale 1.0;
+		Gravity 0.25;
 		+NOBLOCKMAP;
 		+NOTELEPORT;
 		+THRUGHOST;
@@ -3800,7 +3801,6 @@ class PB_SmearingXDeath2 : PB_GibBase
 		+MOVEWITHSECTOR;
 		-DONTSPLASH;
 		+FORCEXYBILLBOARD;
-		+QUARTERGRAVITY;
 	}
     States
     {
@@ -3926,8 +3926,7 @@ class PB_CeilXDeath2: PB_GibBase
 	{
 		+SPAWNCEILING;
 		+MOVEWITHSECTOR;
-		-DOOMBOUNCE;
-		+NOGRAVITY;
+		-BOUNCEONWALLS; -BOUNCEONFLOORS; -ALLOWBOUNCEONACTORS; -BOUNCEAUTOOFF;		+NOGRAVITY;
 		+DontSplash;
 		+MISSILE;
 		Scale 1.1;
