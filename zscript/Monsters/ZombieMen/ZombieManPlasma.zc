@@ -1776,7 +1776,7 @@ Class PB_PlasmaZombie : PB_Zombieman
 		Death.Frost:
 			TNT1 A 0 {
 				bSHOOTABLE = false;
-				bSOLID = false;;
+				bSOLID = false;
 				A_SpawnItem("FrozenPlasmaZombie");
 			}
 			Stop;

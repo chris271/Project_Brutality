@@ -2746,7 +2746,7 @@ Class PB_Chaingunguy : PB_Monster
 		Death.Frost:
 			TNT1 A 0 {
 				bSHOOTABLE = false;
-				bSOLID = false;;
+				bSOLID = false;
 				A_SpawnItem("FrozenZombieman");
 			}
 			Stop;

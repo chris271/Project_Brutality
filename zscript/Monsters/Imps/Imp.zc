@@ -2124,7 +2124,7 @@ Class PB_Imp1 : PB_Monster// Replaces DoomImp
 		Death.Frost:
 			TNT1 A 0 {
 				bSHOOTABLE = false;
-				bSOLID = false;;
+				bSOLID = false;
 				A_SpawnItem("FrozenImp");
 			}
 			Stop;
