@@ -149,7 +149,7 @@ extend class PB_Monster
 	//[Pop] here we are going to do a custom implementation of A_Wander. This
 	//is so the archvile can still detect and resurrect corpses theoretically,
 	//once its written at least.
-	action void A_VileWander()
+	void A_VileWander()
 	{
 		A_Wander();
 		/*run corpse check
@@ -157,7 +157,7 @@ extend class PB_Monster
 			if corpse can be resurrected
 			{
 				set corpse as target
-				//this *should* auto trigger going back to A_SmartVileChase()?
+				//[Pop]this *should* auto trigger going back to A_SmartVileChase()?
 				//but the engine might not like that since the corpse would
 				//technically have 0 health, it might not trigger A_SmartVileChase
 				//properly i guess? its somethin that might need a lot more thought
