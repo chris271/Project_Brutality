@@ -30,6 +30,139 @@ extend class PB_Monster
 	*/
 	void A_SmartVileChase(statelabel s1 = "_a_chase_default", statelabel s2 = "_a_chase_default", int flags = 0)
 	{
-		A_VileChase();
+		
+		Double Dist = Distance3DSquared (Target);
+		
+		if (willBeLooking) return;
+		if (retargetSkips > 0) retargetSkips--;
+		
+		if (target != NULL && isFriend(target))
+		{
+			A_ClearTarget();
+			A_ClearLastHeard();
+			A_ClearSoundTarget();
+			target = NULL;
+		}
+		
+		if (target == NULL || Wandering == true || (target != NULL && target.health <= 0))
+		{
+			Wandering == true;
+			A_GiveInventory("Wandering",1);
+			if(patrolTimer > 700)
+			{
+				if(self.patrolSpeed) self.Speed = self.patrolSpeed;
+				OnPatrol = true;
+				A_SetTics(2);
+			}
+			else
+			{
+				if(self.searchSpeed) self.Speed = self.searchSpeed;
+			}
+			A_Wander();
+			if(retargetSkips <= 0)
+			{
+				retargetSkips = 3;
+				A_LookEx();
+			}
+			patrolTimer++;
+			return;
+		}
+		
+		if (Dist <= 150*150 && Dist >= 50*50 && CheckSight(target))
+		{
+			if(random(1,2) == 2)
+			{
+				A_Chase(s2, s1, flags | CHF_RESURRECT);
+				return;
+			}
+			if(canFallback && ResolveState("Fallback"))
+				SetStateLabel("Fallback");
+		}
+		
+		if(waterlevel >= 1 && Target.Pos.Z > (self.Pos.Z + 10))
+		{
+			A_Chase(s2, s1, flags | CHF_RESURRECT);
+			A_FaceTarget(30);
+			A_Recoil(-3);
+			ThrustThingZ(0, 5, 0, 1);
+		}
+		
+		if (Dist <= 3000*3000 && CheckSight(target))
+		{
+			double dist = Distance3D(target);
+			let aimActor = AimTarget();
+			let fw = 33;
+			
+			//check if sight the player is close enough to "hear" them for memory
+			if (Dist <= 150*150)
+			{
+				EnemyLastSighted = Level.MapTime;
+				Wandering == false;
+				OnPatrol = false;
+				patrolTimer == 0;
+			}
+			
+			if(self.combatSpeed) self.Speed = self.combatSpeed;
+			
+			//[Pop] I dunno if archviles should be fucked up and evil and dodge
+			//so im leaving this code in
+			if(canRoll && ResolveState("Roll"))
+			{
+				//dodging system check
+				LookExParams look;
+				look.FOV = 2;
+				int chance = (random(1,30));
+				if(Dist <= 1500*1500 && Chance <= 2 && target.IsVisible(self, false, look))
+				{
+					if(GetCVar("pb_disabledynamicavoid") == 0)
+					{
+						A_FaceTarget();
+						SetStateLabel("Roll");
+					}
+				}
+			}
+			A_Chase(s2, s1, flags | CHF_RESURRECT);
+		}
+		else if (abs(Level.MapTime - EnemyLastSighted) < 360 && !CheckSight(target))
+		{
+			if(self.chaseSpeed) self.Speed = self.chaseSpeed;
+			A_Chase(s2, s1, flags | CHF_RESURRECT);
+			
+			int chanceR = (random(1,10));
+			
+			if(bFRIGHTENED && canReload && chanceR <= 5 && ResolveState("Reload"))
+			{
+				SetStateLabel("Reload");
+			}
+		}
+		else
+		{
+			Wandering == true;
+			if(self.searchSpeed) self.Speed = self.searchSpeed;
+			A_ClearTarget();
+			A_ClearLastHeard();
+			A_ClearSoundTarget();
+			target == NULL;
+		}
+	}
+	
+	//[Pop] here we are going to do a custom implementation of A_Wander. This
+	//is so the archvile can still detect and resurrect corpses theoretically,
+	//once its written at least.
+	action void A_VileWander()
+	{
+		A_Wander();
+		/*run corpse check
+		{
+			if corpse can be resurrected
+			{
+				set corpse as target
+				//this *should* auto trigger going back to A_SmartVileChase()?
+				//but the engine might not like that since the corpse would
+				//technically have 0 health, it might not trigger A_SmartVileChase
+				//properly i guess? its somethin that might need a lot more thought
+			}
+		}
+		*/
 	}
 }
