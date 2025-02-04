@@ -146,9 +146,10 @@ extend class PB_Monster
 		}
 	}
 	
-	//[Pop] here we are going to do a custom implementation of A_VileWander. This
-	//is so the archvile can still detect and resurrect corpses theoretically,
-	//once its written at least.
+	//[Pop] here we are going to do a custom implementation of A_Wander. This
+	//is so the archvile can still detect and resurrect corpses while wandering
+	//rather than being actively in combat. This can be updated later to have 
+	//more functionality.
 	void A_VileWander()
 	{
 		A_Wander();
