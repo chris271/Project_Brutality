@@ -58,7 +58,7 @@ extend class PB_Monster
 			{
 				if(self.searchSpeed) self.Speed = self.searchSpeed;
 			}
-			A_Wander();
+			A_VileWander();
 			if(retargetSkips <= 0)
 			{
 				retargetSkips = 3;
@@ -146,23 +146,12 @@ extend class PB_Monster
 		}
 	}
 	
-	//[Pop] here we are going to do a custom implementation of A_Wander. This
+	//[Pop] here we are going to do a custom implementation of A_VileWander. This
 	//is so the archvile can still detect and resurrect corpses theoretically,
 	//once its written at least.
 	void A_VileWander()
 	{
 		A_Wander();
-		/*run corpse check
-		{
-			if corpse can be resurrected
-			{
-				set corpse as target
-				//[Pop]this *should* auto trigger going back to A_SmartVileChase()?
-				//but the engine might not like that since the corpse would
-				//technically have 0 health, it might not trigger A_SmartVileChase
-				//properly i guess? its somethin that might need a lot more thought
-			}
-		}
-		*/
+		A_CheckForResurrection("Heal");
 	}
 }
