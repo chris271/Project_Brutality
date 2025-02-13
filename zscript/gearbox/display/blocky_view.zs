@@ -276,7 +276,7 @@ class gb_BlockyView
     int nWords = words.size();
     lines.push(words[nWords - 1]);
     int spaceWidth = aFont.stringWidth(" ");
-    int allowedStringWidth = SELECTED_SLOT_WIDTH - 2;
+    uint allowedStringWidth = SELECTED_SLOT_WIDTH - 2;
     for (int i = nWords - 2; i >= 0; --i)
     {
       uint newWidth = (aFont.stringWidth(lines[0]) + spaceWidth + aFont.stringWidth(words[i]));
