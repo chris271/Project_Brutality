@@ -157,6 +157,13 @@ Class PB_SuperGL : PB_Weapon
 			}
 			goto ready;
 		
+		NoAmmo:
+			SL02 E 1 {
+				SGL_ChangeModeSprite("SL02","SL12","SL22","SL32","SL42","S001");
+				
+			}
+			goto ready3;
+		
 		Fire:
 			TNT1 A 0 PB_jumpIfHasBarrel("ThrowBarrel","ThrowFlameBarrel","ThrowIceBarrel");
 			TNT1 A 0 {

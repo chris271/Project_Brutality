@@ -78,7 +78,7 @@ class gb_WheelView
     int radius       = screenHeight * 5 / 32;
     int allowedWidth = int(screenHeight * 3 / 16 - MARGIN * 2 * mScaleFactor);
 
-    int nPlaces = 0;
+    uint nPlaces = 0;
 
     bool isSlotExpanded = false;
     bool isMultiWheelMode = mMultiWheelMode.isEngaged(viewModel);

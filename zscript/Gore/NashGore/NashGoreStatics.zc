@@ -201,7 +201,7 @@ class NashGoreStatics play
 				it.Reinit();
 				if (mo = Actor(it.Next()))
 				{		
-					bool valid = mo is "PB_CasingBase";
+					bool valid = mo is "PB_CasingBase" || mo is "EmptyMagBase";
 
 					if (valid) {
 						// console.printf("cleaned up casing %p", mo);
