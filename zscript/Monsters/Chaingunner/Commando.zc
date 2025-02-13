@@ -216,7 +216,7 @@ Class PB_Chaingunguy : PB_Monster
 			TNT1 A 0 A_ClearTarget();
 			TNT1 A 0 A_TakeInventory("Wandering", 71);
 			TNT1 A 0 A_Jump(200, "SeeContinue");
-			TNT1 A 0 A_StartSound("BODYF", CHAN_AUTO, 0.5);
+			TNT1 A 0 A_StartSound("BODYF", CHAN_AUTO, volume: 0.5);
 			MP1S AAAAAAAA 10 A_Look();
 			TNT1 A 0 A_StartSound("monsters/zombie/searching", CHAN_AUTO);
 			MP1S AAAAAAAA 10 A_Look();
@@ -375,7 +375,7 @@ Class PB_Chaingunguy : PB_Monster
 		//Crouch Fire
 		Attack2:
 			MPOS E 8;
-			TNT1 A 0 A_StartSound("BODYF", CHAN_AUTO, 0.5);
+			TNT1 A 0 A_StartSound("BODYF", CHAN_AUTO, volume: 0.5);
 			MP1S A 8 A_FaceTarget();
 			TNT1 A 0 A_JumpIf(MinigunSpun, "Attack2Loop");
 			TNT1 A 0
@@ -745,8 +745,9 @@ Class PB_Chaingunguy : PB_Monster
 			TNT1 A 0 A_JumpIfInventory("Enraged", 1, "Missile");
 			MPOS G 1 {
 				A_Pain();
-				bMISSILEMORE = true;
-				bMISSILEEVENMORE = true;
+				//bMISSILEMORE = True;
+				//bMISSILEEVENMORE = True;
+				MissileChanceMult = 0.0625; // Same as the above flags.
 				A_StartSound("grunt/sight");
 				A_FaceTarget();
 				A_GiveInventory("Enraged", 1);
@@ -989,7 +990,7 @@ Class PB_Chaingunguy : PB_Monster
 			TNT1 A 0 A_Scream;
 			TNT1 A 0 A_NoBlocking();
 			CPHM AB 4;
-			CPHM CD 4 A_JumpIf((MomY == 0), "TakeASit");
+			CPHM CD 4 A_JumpIf((Vel.Y == 0), "TakeASit");
 			CPHM EF 4;
 			TNT1 A 0 A_StartSound("BODYF",6);
 			TNT1 A 0 A_SpawnItem("DropedMinigun", 0, 5,0);
@@ -1082,11 +1083,11 @@ Class PB_Chaingunguy : PB_Monster
 			
 			TNT1 A 0 A_Recoil(1);
 			CPDR I 2;
-			TNT1 A 0 A_JumpIf((MomY == 0), "TakeASit");
+			TNT1 A 0 A_JumpIf((Vel.Y == 0), "TakeASit");
 			TNT1 A 0 A_SpawnItem("RifleCaseSpawn", 0, 30,0);
 			TNT1 A 0 A_SpawnProjectile("PB_MonsterMinigunTracer", 24, 15, -10, 2, 40);
 			CPDR J 2 BRIGHT;
-			TNT1 A 0 A_JumpIf((MomY == 0), "TakeASit");
+			TNT1 A 0 A_JumpIf((Vel.Y == 0), "TakeASit");
 			
 			CPDR K 2;
 			TNT1 A 0 A_SpawnItem("RifleCaseSpawn", 0, 30,0);
@@ -1307,12 +1308,12 @@ Class PB_Chaingunguy : PB_Monster
 			TNT1 A 0 A_FaceTarget();
 			TNT1 A 1;
 			TNT1 A 0 A_JumpIf(angle < 180, "IsFacingNorth");
-			TNT1 A 0 A_JumpIf(velx < 0, "BlownAwayRight");
-			TNT1 A 0 A_JumpIf(velx > 0, "BlownAwayLeft");
+			TNT1 A 0 A_JumpIf(Vel.X < 0, "BlownAwayRight");
+			TNT1 A 0 A_JumpIf(Vel.X > 0, "BlownAwayLeft");
 			Goto XDeath;
 			IsFacingNorth:
-			TNT1 A 0 A_JumpIf(velx > 0, "BlownAwayRight");
-			TNT1 A 0 A_JumpIf(velx < 0, "BlownAwayLeft");
+			TNT1 A 0 A_JumpIf(Vel.X > 0, "BlownAwayRight");
+			TNT1 A 0 A_JumpIf(Vel.X < 0, "BlownAwayLeft");
 			Goto XDeath;
 			
 		BlownAwayLeft:	

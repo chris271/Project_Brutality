@@ -216,7 +216,8 @@ Class PB_Cacodemon : PB_Monster// Replaces DoomImp
 				jawDetached = true;
 				bALLOWPAIN = false;
 				bNOPAIN = true;
-				bMISSILEMORE = true;
+				//bMISSILEMORE = true;
+				MissileChanceMult = 0.5; // Same as MISSILEMORE
 				
 				A_SpawnItem ("BlueBloodPool");
 				//Spawn gore
