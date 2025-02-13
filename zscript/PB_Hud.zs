@@ -81,7 +81,9 @@ class PB_Hud_ZS : BaseStatusBar
 	float playerAlpha, playerBoxAlpha, messageSize, bloodDropsAlpha, glassCracksAlpha;
 
 	bool centerNotify;
-  
+
+	//For addon devs and mappers
+	bool skipDrawing;
 	
 	override void Init()
 	{
@@ -106,6 +108,8 @@ class PB_Hud_ZS : BaseStatusBar
 		mFOffsetInterpolator = PB_DynamicDoubleInterpolator.Create(0, 0.5, 0, 64);
 
 		InvBar = InventoryBarState.Create();
+
+		skipDrawing = false;
 	}
 	
 	void GatherCvars()
@@ -147,6 +151,8 @@ class PB_Hud_ZS : BaseStatusBar
 
 	override void Draw(int state, double TicFrac)
 	{
+		if(skipDrawing) return;
+
 		Super.Draw(state, TicFrac);
 
 		if(menuactive || consolestate == c_up) 
