@@ -315,6 +315,7 @@ server int nashgore_maxcasings = 50;
 // NashGore CVARs
 server int nashgore_maxgore = 1024;
 server int nashgore_bloodtype = 0;
+server float nashgore_bloodmult = 1.0;
 server int nashgore_bloodamount = 255;
 server bool nashgore_spriteblood = false;
 server bool nashgore_bloodspurt = true;
