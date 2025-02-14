@@ -441,7 +441,7 @@ Class LaunchedLostSoul : Actor{
 			//A_SetUserVar("user_effectang1",user_effectang1-3);
 			A_SeekerMissile(10,10);
 			for(int i = 0; i<2; i++){
-				A_CustomMissile("SoulTrails", 24, 0, random (0, 360), 2, random (0, 160));
+				A_SpawnProjectile("SoulTrails", 24, 0, random (0, 360), 2, random (0, 160));
 				A_SpawnItemEx("SoulTrails",0,(user_radius1*sin(-user_ang1*(7.5)+30)),(user_radius1*cos(-user_ang1*(7.5)+30))+height/2,0,0,0,0,0,0);
 				A_SpawnItemEx("SoulTrails",0,(user_radius1*sin(-user_ang1*(7.5)+150)),(user_radius1*cos(-user_ang1*(7.5)+150))+height/2,0,0,0,0,0,0);
 				A_SpawnItemEx("SoulTrails",0,(user_radius1*sin(-user_ang1*(7.5)+270)),(user_radius1*cos(-user_ang1*(7.5)+270))+height/2,0,0,0,0,0,0);
@@ -449,25 +449,25 @@ Class LaunchedLostSoul : Actor{
 		}
 		Loop;
 	Death:
-		EXPL AAAAA 0 A_CustomMissile("FireBallExplosionFlamesMedium", 32, 0, random (0, 360), 2, random (0, 360));
+		EXPL AAAAA 0 A_SpawnProjectile("FireBallExplosionFlamesMedium", 32, 0, random (0, 360), 2, random (0, 360));
 		TNT1 AAAA 0 {
-			A_CustomMissile("SmallLSPart1", 0, 0, random (0, 360), 2, random (0, 360));
-			A_CustomMissile("SmallLSPart3", 0, 0, random (0, 360), 2, random (0, 360));
-			A_CustomMissile("PlasmaSmoke", 32, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile("SmallLSPart1", 0, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile("SmallLSPart3", 0, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile("PlasmaSmoke", 32, 0, random (0, 360), 2, random (0, 360));
 		}
 		TNT1 AAA 0 {
-			A_CustomMissile("CoolAndNewFlameTrailsLong", 12, 0, random (0, 360), 2, random (0, 160));
-			A_CustomMissile("LSpart1", 42, 0, random (0, 360), 2, random (0, 160));
-			A_CustomMissile ("ExplosionSmoke", 0, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile("CoolAndNewFlameTrailsLong", 12, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("LSpart1", 42, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile ("ExplosionSmoke", 0, 0, random (0, 360), 2, random (0, 360));
 		}
 		EXPL AA 0 {
 			A_SpawnItem("ExplosionParticleSpawner");
-			A_CustomMissile("LSpart2", 42, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("LSpart2", 42, 0, random (0, 360), 2, random (0, 160));
 		}
 		TNT1 A 0 {
 			A_Scream;
 			A_SpawnItemEx("ExplosionFlareSpawner",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION,0);
-			A_CustomMissile("LSpart3", 42, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("LSpart3", 42, 0, random (0, 360), 2, random (0, 160));
 			A_StartSound("lesserExplosion",CHAN_AUTO);
 			Radius_Quake (2, 54, 0, 15, 0);
 			A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
@@ -498,7 +498,7 @@ Class LaunchedPhantasm : LaunchedLostSoul{
 			A_SetUserVar("user_ang1",user_ang1+3);
 			A_SeekerMissile(10,10);
 			for(int i = 0; i<2; i++){
-				A_CustomMissile("PhantasmTrails", 24, 0, random (0, 360), 2, random (0, 160));
+				A_SpawnProjectile("PhantasmTrails", 24, 0, random (0, 360), 2, random (0, 160));
 				A_SpawnItemEx("PhantasmTrails",0,(user_radius1*sin(-user_ang1*(7.5)+30)),(user_radius1*cos(-user_ang1*(7.5)+30))+height/2,0,0,0,0,0,0);
 				A_SpawnItemEx("PhantasmTrails",0,(user_radius1*sin(-user_ang1*(7.5)+150)),(user_radius1*cos(-user_ang1*(7.5)+150))+height/2,0,0,0,0,0,0);
 				A_SpawnItemEx("PhantasmTrails",0,(user_radius1*sin(-user_ang1*(7.5)+270)),(user_radius1*cos(-user_ang1*(7.5)+270))+height/2,0,0,0,0,0,0);
@@ -506,37 +506,37 @@ Class LaunchedPhantasm : LaunchedLostSoul{
 		}
 		Loop;
 	Death:
-		EXPL AAAAA 0 A_CustomMissile("SmallGreenFlameTrails", 32, 0, random (0, 360), 2, random (0, 360));
+		EXPL AAAAA 0 A_SpawnProjectile("SmallGreenFlameTrails", 32, 0, random (0, 360), 2, random (0, 360));
 		TNT1 AAAA 0 {
-			A_CustomMissile("SmallPhantasmPart1", 0, 0, random (0, 360), 2, random (0, 360));
-			A_CustomMissile("SmallPhantasmPart3", 0, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile("SmallPhantasmPart1", 0, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile("SmallPhantasmPart3", 0, 0, random (0, 360), 2, random (0, 360));
 			A_SpawnItem("GreenFlare",0,0);
-			A_CustomMissile("PlasmaSmoke", 32, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile("PlasmaSmoke", 32, 0, random (0, 360), 2, random (0, 360));
 		}
 		TNT1 AAA 0 {
-			A_CustomMissile("RealFlameTrailsGreen", 12, 0, random (0, 360), 2, random (0, 160));
-			A_CustomMissile("Phantasmpart1", 42, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("RealFlameTrailsGreen", 12, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("Phantasmpart1", 42, 0, random (0, 360), 2, random (0, 160));
 			A_SpawnItemEx("PlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128);
 		}
 		TNT1 AA 0 {
-			A_CustomMissile("PhantasmHorn", 42, 0, random (0, 360), 2, random (0, 160));
-			A_CustomMissile("Phantasmpart2", 42, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("PhantasmHorn", 42, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("Phantasmpart2", 42, 0, random (0, 360), 2, random (0, 160));
 			A_SpawnItem("ExplosionParticleSpawner");
 		}
 		TNT1 A 0 {
 			A_Scream;
 			A_SpawnItemEx("PlasmaParticleSpawner", 0, 0, 0, 0, 0, 0, 0, 128);
-			A_CustomMissile("GreenExplosionFire", 12, 0, random (0, 360), 2, random (0, 160));
-			A_CustomMissile("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("GreenExplosionFire", 12, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("PlasmaSmoke", 1, 0, random (0, 360), 2, random (0, 160));
 			A_PlaySound("BFGALPP");
 			A_SpawnItem("GreenExplosionMushroom",0,6);
 			A_Explode(3, 64, XF_HURTSOURCE | XF_NOTMISSILE, false, 32);
-			A_CustomMissile("Phantasmpart3", 42, 0, random (0, 360), 2, random (0, 160));
+			A_SpawnProjectile("Phantasmpart3", 42, 0, random (0, 360), 2, random (0, 160));
 			A_SpawnItemEx("BFGAltExplosion",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			A_SpawnItem("BFGAltShockWave",0,0);
 			A_StartSound("lesserExplosion",CHAN_AUTO);
 			Radius_Quake(2, 54, 0, 15, 0);
-			A_CustomMissile ("ExplosionSmoke", 0, 0, random (0, 360), 2, random (0, 360));
+			A_SpawnProjectile ("ExplosionSmoke", 0, 0, random (0, 360), 2, random (0, 360));
 			A_SpawnItemEx ("DetectFloorCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			A_SpawnItemEx ("DetectCeilCrater",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION,0);
 			A_Explode(7, 120, 1);

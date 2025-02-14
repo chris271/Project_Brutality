@@ -158,13 +158,15 @@ Class PB_Imp1 : PB_Monster// Replaces DoomImp
 		if(!IsInState (Self,"WallLatch_Turret"))
 		{
 			A_SetScale(1.0);
-			bMISSILEEVENMORE = true;
-			bMISSILEMORE = true;
+			//bMISSILEEVENMORE = true;
+			//bMISSILEMORE = true;
+			MissileChanceMult = 0.0625; // Same as these two flags being on.
 		}
 		else
 		{
-			bMISSILEEVENMORE = false;
-			bMISSILEMORE = false;
+			//bMISSILEEVENMORE = false;
+			//bMISSILEMORE = false;
+			MissileChanceMult = 1.0; // Reset to default;
 		}
 		
 		
@@ -2124,7 +2126,7 @@ Class PB_Imp1 : PB_Monster// Replaces DoomImp
 		Death.Frost:
 			TNT1 A 0 {
 				bSHOOTABLE = false;
-				bSOLID = false;;
+				bSOLID = false;
 				A_SpawnItem("FrozenImp");
 			}
 			Stop;
