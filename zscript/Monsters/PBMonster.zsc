@@ -81,8 +81,8 @@ class PB_Monster : Actor abstract
 
 		double sndPitch = frandom(0.75, 1.25) * invoker.tailPitch;
 		
-		A_StartSound("weapons/atmo/"..tmpTailSound, 19, 0.5, pitch: sndPitch);
-		A_StartSound("weapons/atmo/dist/"..tmpTailSound, 20, 0.6, pitch: sndPitch);
+		A_StartSound("weapons/atmo/"..tmpTailSound, 19, volume: 0.5, pitch: sndPitch);
+		A_StartSound("weapons/atmo/dist/"..tmpTailSound, 20, volume: 0.6, pitch: sndPitch);
 		A_StartSound("weapons/atmo/far/"..tmpTailSound, 21, pitch: sndPitch);
 		A_StartSound("weapons/atmo/med/"..tmpTailSound, 22, pitch: sndPitch);
 	}
@@ -420,8 +420,9 @@ class PB_Monster : Actor abstract
 		+ROLLCENTER;
 		+FORCEPAIN;
 		+JUMPDOWN;
-		-MISSILEMORE;
-		-MISSILEEVENMORE;
+		//-MISSILEMORE;
+		//-MISSILEEVENMORE;
+		MissileChanceMult 1.0;
 		BloodType "NashGoreBlood", "NashGoreBlood", "NashGoreBlood";
 		PB_Monster.CanIRoll true;
 		PB_Monster.CanIFallback true;

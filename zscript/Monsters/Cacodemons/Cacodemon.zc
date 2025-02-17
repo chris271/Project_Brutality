@@ -216,7 +216,8 @@ Class PB_Cacodemon : PB_Monster// Replaces DoomImp
 				jawDetached = true;
 				bALLOWPAIN = false;
 				bNOPAIN = true;
-				bMISSILEMORE = true;
+				//bMISSILEMORE = true;
+				MissileChanceMult = 0.5; // Same as MISSILEMORE
 				
 				A_SpawnItem ("BlueBloodPool");
 				//Spawn gore
@@ -781,7 +782,7 @@ class PB_CacodemonGib1 : PB_LimbBase
 		BloodType "NashGoreBlood_Blue", "NashGoreBlood_Blue", "NashGoreBlood_Blue";
 		BounceFactor 0.4;
 		BounceCount 3;
-		+DOOMBOUNCE;
+		+BOUNCEONWALLS; +BOUNCEONFLOORS; +ALLOWBOUNCEONACTORS; +BOUNCEAUTOOFF;
 		+MOVEWITHSECTOR;
 		+CLIENTSIDEONLY;
 		+NOBLOCKMAP;

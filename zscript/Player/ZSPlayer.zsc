@@ -108,7 +108,6 @@ class PB_PlayerPawn : PlayerPawnBase
 		Player.StartItem "DeagleAmmo",12;
 		Player.StartItem "LeftDeagleAmmo",12;
 		Player.StartItem "CheXRifleAmmo",42;
-		Player.StartItem "CryoDMRAmmo",60;
 		Player.StartItem "HasBuckShot",1; //Added for proper SG ammo type sorting
 		Player.StartItem "FragGrenadeSelected",1;
 		Player.StartItem "PB_GrenadeAmmo",3;
