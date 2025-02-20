@@ -103,9 +103,9 @@ class PB_Monster : Actor abstract
 			target = NULL;
 		}
 		
-		if (target == NULL || Wandering == true || (target != NULL && target.health <= 0))
+		if (!target || !Wandering || (target && target.health <= 0))
 		{
-			Wandering == true;
+			Wandering = true;
 			A_GiveInventory("Wandering",1);
 			if(patrolTimer > 700)
 			{
@@ -159,9 +159,9 @@ class PB_Monster : Actor abstract
 			if (Dist <= 150*150)
 			{
 				EnemyLastSighted = Level.MapTime;
-				Wandering == false;
+				Wandering = false;
 				OnPatrol = false;
-				patrolTimer == 0;
+				patrolTimer = 0;
 			}
 			
 			if(self.combatSpeed) self.Speed = self.combatSpeed;
@@ -199,13 +199,13 @@ class PB_Monster : Actor abstract
 		}
 		else
 		{
-			Wandering == true;
+			Wandering = true;
 			if(self.searchSpeed) self.Speed = self.searchSpeed;
 			//self.FastSpeed = self.searchSpeed * 2;
 			A_ClearTarget();
 			A_ClearLastHeard();
 			A_ClearSoundTarget();
-			target == NULL;
+			target = NULL;
 		}
 	}
 	
@@ -287,7 +287,7 @@ class PB_Monster : Actor abstract
 	
 	double A_PrepairDrop()
 	{
-		vector2 aimbak =(self.angle,self.pitch);
+		vector2 aimbak=(self.angle,self.pitch);
 		self.A_FaceTarget(0,0);
 		self.angle=aimbak.x;
 		self.pitch=aimbak.y;
@@ -340,7 +340,7 @@ class PB_Monster : Actor abstract
 		if(dist>0 && gravity != 0) {self.pitch += atan(10/dist);}
 		else { self.pitch = 0;}
 		
-		double finalAngle =  PredAngle+1024;
+		double finalAngle = PredAngle+1024;
 		
 		if(flipped) {
 			finalAngle = PredAngle-1024;
