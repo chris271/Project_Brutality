@@ -97,18 +97,21 @@ class PB_Monster : Actor abstract
 		
 		if (target != NULL && isFriend(target)) //(target is "PossessionWarperA" || isFriend(target)))
 		{
+			console.Printf("Target is a friend.");
 			A_ClearTarget();
-			A_ClearLastHeard();
-			A_ClearSoundTarget();
-			target = NULL;
+			//A_ClearLastHeard();
+			//A_ClearSoundTarget();
+			//target = NULL;
 		}
-		
-		if (!target || !Wandering || (target && target.health <= 0))
+
+		// Wander around then go looking again.
+		if (!Target || Wandering)
 		{
-			Wandering = true;
+			console.Printf("Wandering = True");
 			A_GiveInventory("Wandering",1);
 			if(patrolTimer > 700)
 			{
+				console.Printf("Patrol Timer Reached 700.\nOn Patrol.");
 				if(self.patrolSpeed) self.Speed = self.patrolSpeed;
 				//self.FastSpeed = self.patrolSpeed * 2;
 				OnPatrol = true;
@@ -116,96 +119,122 @@ class PB_Monster : Actor abstract
 			}
 			else
 			{
+				console.Printf("Set speed to %d", self.SearchSpeed);
 				if(self.searchSpeed) self.Speed = self.searchSpeed;
 				//self.FastSpeed = self.searchSpeed * 2;
 			}
 			A_Wander();
+			console.Printf("Wandered...");
 			if(retargetSkips <= 0) {
+				console.Printf("Ran out of retarget skips. Looking for Target.");
 				retargetSkips = 3;
-				A_LookEx();
+				if (LookForEnemies(False))
+				{
+					if (Target) console.Printf("Found: %s", Target.GetClassName());
+					OnPatrol = False;
+					Wandering = False;
+					A_TakeInventory("Wandering", 75);
+				}
+
 			}
 			patrolTimer++;
-			return;
+			console.Printf("Increment Patrol Timer - %d", patrolTimer);
+			//return;
 		}
 
-		Double Dist = Distance3DSquared (Target);
-		
-		if (Dist <= 150*150 && Dist >= 50*50 && CheckSight(target))
+		// Active Target Engagement. Switch into Wander if monster loses sight for too long.
+		if (Target)
 		{
-			if(random(1,2) == 2)
-			{
-				A_Chase(s2, s1, flags);
-				return;
-			}
-			if(canFallback && ResolveState("Fallback"))
-				SetStateLabel("Fallback");
-		}
-		
-		if(waterlevel >= 1 && Target.Pos.Z > (self.Pos.Z + 10))
-		{
-			A_Chase(s2, s1, flags);
-			A_FaceTarget(30);
-			A_Recoil(-3);
-			ThrustThingZ(0, 5, 0, 1);
-		}
-		
-		if (Dist <= 3000*3000 && CheckSight(target))
-		{
-			double dist = Distance3D(target);
-			let aimActor = AimTarget();
-			let fw = 33;
+			Double Dist = Distance3DSquared (Target);
 			
-			//check if sight the player is close enough to "hear" them for memory
-			if (Dist <= 150*150)
+			if (Dist <= 150*150 && Dist >= 50*50 && CheckSight(target))
 			{
-				EnemyLastSighted = Level.MapTime;
-				Wandering = false;
-				OnPatrol = false;
-				patrolTimer = 0;
-			}
-			
-			if(self.combatSpeed) self.Speed = self.combatSpeed;
-			//self.FastSpeed = self.combatSpeed * 2;
-			
-			if(canRoll && ResolveState("Roll"))
-			{
-				//dodging system check
-				LookExParams look;
-				look.FOV = 2;
-				int chance = (random(1,30));
-				if(Dist <= 1500*1500 && Chance <= 2 && target.IsVisible(self, false, look))
+				console.Printf("Close Range Attack");
+				if(random(1,2) == 2)
 				{
-					if(GetCVar("pb_disabledynamicavoid") == 0)
-					{
-						A_FaceTarget();
-						SetStateLabel("Roll");
-					}
+					console.Printf("Won Coin Flip: Chasing.");
+					A_Chase(s2, s1, flags);
+					return;
+				}
+				if(canFallback && ResolveState("Fallback"))
+				{
+					console.Printf("Falling Back.");
+					SetStateLabel("Fallback");
 				}
 			}
-			A_Chase(s2, s1, flags);
-		}
-		else if (abs(Level.MapTime - EnemyLastSighted) < 360 && !CheckSight(target))
-		{
-			if(self.chaseSpeed) self.Speed = self.chaseSpeed;
-			//self.FastSpeed = self.chaseSpeed * 2;
-			A_Chase(s2, s1, flags);
 			
-			int chanceR = (random(1,10));
-			
-			if(bFRIGHTENED && canReload && chanceR <= 5 && ResolveState("Reload"))
+			if(waterlevel >= 1 && Target.Pos.Z > (self.Pos.Z + 10))
 			{
-				SetStateLabel("Reload");
+				A_Chase(s2, s1, flags);
+				A_FaceTarget(30);
+				A_Recoil(-3);
+				ThrustThingZ(0, 5, 0, 1);
 			}
-		}
-		else
-		{
-			Wandering = true;
-			if(self.searchSpeed) self.Speed = self.searchSpeed;
-			//self.FastSpeed = self.searchSpeed * 2;
-			A_ClearTarget();
-			A_ClearLastHeard();
-			A_ClearSoundTarget();
-			target = NULL;
+			
+			if (Dist <= 3000*3000 && CheckSight(target))
+			{
+				console.Printf("Long Range Attack.");
+				double dist = Distance3D(target);
+				let aimActor = AimTarget();
+				let fw = 33;
+				
+				//check if sight the player is close enough to "hear" them for memory
+				if (Dist <= 150*150)
+				{
+					console.Printf("I can hear %s\nWandering = False\nOnPatrol = False\npatrolTimer = 0", target.GetClassName());
+					EnemyLastSighted = Level.MapTime;
+					Wandering = false;
+					OnPatrol = false;
+					A_TakeInventory("Wandering", 75);
+					patrolTimer = 0;
+				}
+				
+				if(self.combatSpeed) self.Speed = self.combatSpeed;
+				//self.FastSpeed = self.combatSpeed * 2;
+				
+				if(canRoll && ResolveState("Roll"))
+				{
+					//dodging system check
+					LookExParams look;
+					look.FOV = 2;
+					int chance = (random(1,30));
+					if(Dist <= 1500*1500 && Chance <= 2 && target.IsVisible(self, false, look))
+					{
+						if(GetCVar("pb_disabledynamicavoid") == 0)
+						{
+							A_FaceTarget();
+							SetStateLabel("Roll");
+						}
+					}
+				}
+				A_Chase(s2, s1, flags);
+			}
+			else if (abs(Level.MapTime - EnemyLastSighted) < 360 && !CheckSight(target))
+			{
+				console.Printf("Saw %s %d ago.", target.GetClassName(), abs(Level.MapTime - EnemyLastSighted));
+				if(self.chaseSpeed) self.Speed = self.chaseSpeed;
+				//self.FastSpeed = self.chaseSpeed * 2;
+				A_Chase(s2, s1, flags);
+				
+				int chanceR = (random(1,10));
+				
+				if(bFRIGHTENED && canReload && chanceR <= 5 && ResolveState("Reload"))
+				{
+					console.Printf("Reloading.");
+					SetStateLabel("Reload");
+				}
+			}
+			else
+			{
+				console.Printf("Wandering = True\nClearing Target.");
+				Wandering = true;
+				if(self.searchSpeed) self.Speed = self.searchSpeed;
+				//self.FastSpeed = self.searchSpeed * 2;
+				//A_ClearTarget();
+				//A_ClearLastHeard();
+				//A_ClearSoundTarget();
+				target = NULL;
+			}
 		}
 	}
 	
