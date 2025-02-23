@@ -1383,7 +1383,11 @@ ACTOR PB_SMG : PB_Weapon
 		A4F1 DDEFG 1 A_SetRoll(roll-0.4, SPF_INTERPOLATE)
 		A4F1 HIJKL 1 A_SetRoll(roll+0.4, SPF_INTERPOLATE)
 		A4F1 LMN 1
-		A4F1 OOP 1 A_SetRoll(roll+0.5, SPF_INTERPOLATE)
+		A4F1 OO 1 A_SetRoll(roll+0.5, SPF_INTERPOLATE)
+		A4F1 P 1 {
+			A_PlaySoundEx("weapons/smg_in", "Auto");
+			A_SetRoll(roll+0.5, SPF_INTERPOLATE);
+		}
 	ReloadContinue:
 		TNT1 A 0 {
 			//A_PlaySoundEx("Ironsights", "Auto");
@@ -1412,8 +1416,7 @@ ACTOR PB_SMG : PB_Weapon
 			}
 		}
 		A4F1 UVW 1
-		TNT1 A 0 A_PlaySoundEx("weapons/smg_in", "Auto")
-		A4F1 X 1
+		A4F1 X 1 A_PlaySoundEx("weapons/smg_in", "Auto")
 		TNT1 A 0 {
 			A_Overlay(2, "UnloadedBoltOverlay");
 			A_SetInventory("UACSMGWasEmpty", 1);
