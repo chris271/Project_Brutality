@@ -160,7 +160,7 @@ class PB_Monster : Actor abstract
 				OnPatrol = false;
 				A_TakeInventory("Wandering", 75);
 				patrolTimer = 0;
-				retargetSkips = 3;
+				retargetSkips = 1;
 				//console.Printf("Update Last Sighted.");
 
 				// [DarynS] Close Range Attack
@@ -468,7 +468,7 @@ class PB_Monster : Actor abstract
 		heardOpponent = 0;
 		HitBoxSpawned = False;
 		avoidCooldown = 0;
-		retargetSkips = 3;
+		retargetSkips = 1;
 	}
 	
 	Default
