@@ -3,7 +3,7 @@ ACTOR PB_RocketZombie: PB_Sergeant //Replaces ShotgunGuy
 	//$Title Rocket Sergeant
 	//$Category Project Brutality - Monsters/Former Humans/Sergeants
 	//$Sprite MP0SB1
-	DropItem "RocketAmmo"
+	DropItem "PB_RocketZombieDrop"
 	SpawnID 1260
 	+NOTARGET
 	Painchance "Avoid", 0
