@@ -1,4 +1,4 @@
-brightmap sprite AVI1A1D1 { map "brightmaps/monsters/Archviles/Archvile/BaseFrames/monsters/Archviles/Archvile/BaseFrames/AVI1A1D1.png" }
+brightmap sprite AVI1A1D1 { map "brightmaps/monsters/Archviles/Archvile/BaseFrames/AVI1A1D1.png" }
 brightmap sprite AVI1A2D8 { map "brightmaps/monsters/Archviles/Archvile/BaseFrames/AVI1A2D8.png" }
 brightmap sprite AVI1A3D7 { map "brightmaps/monsters/Archviles/Archvile/BaseFrames/AVI1A3D7.png" }
 brightmap sprite AVI1A7D3 { map "brightmaps/monsters/Archviles/Archvile/BaseFrames/AVI1A7D3.png" }
