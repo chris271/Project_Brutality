@@ -34,12 +34,10 @@ Class PB_Archvile : PB_Monster
 		Radius 20;
 		Height 56;
 		Mass 500;
-		Speed 15;
+		Speed 7;
 		PainChance 10;
-		Monster;
 		MaxTargetRange 896;
 		+QUICKTORETALIATE 
-		+FLOORCLIP 
 		+NOTARGET
 		SeeSound "vile/sight";
 		PainSound "vile/pain";
@@ -49,24 +47,19 @@ Class PB_Archvile : PB_Monster
 		Obituary "$OB_VILE";
 		Tag "$FN_ARCH";
 	}
-	
-	void A_SmartVileChase(statelabel s1 = "_a_chase_default", statelabel s2 = "_a_chase_default", int flags = 0)
-	{
-		A_VileChase();
-	}
-	
+
 	States
 	{
 		Spawn:
 			AVI1 AB 10 A_Look;
 			Loop;
 		See:
-			AVI1 AA 2;
+			AVI1 AA 2 A_VileChase();
 			TNT1 A 0 A_Startsound("vile/step", CHAN_5);
-			AVI1 BBCC 2 A_VileChase;
-			AVI1 DD 2;
+			AVI1 BBCC 2 A_VileChase();
+			AVI1 DD 2 A_VileChase();
 			TNT1 A 0 A_Startsound("vile/step", CHAN_5);
-			AVI1 EEFF 2 A_VileChase;
+			AVI1 EEFF 2 A_VileChase();
 			Loop;
 		Missile:
 			AVI1 G 0 BRIGHT A_VileStart;
