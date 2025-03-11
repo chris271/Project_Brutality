@@ -365,6 +365,13 @@ optionvalue "MG42Spawns"
 	2,"Off"
 }
 
+optionvalue "MonsterDrops"
+{
+	0,"Just ammo"
+	1,"Default"
+	//2,"weapons+"
+}
+
 OptionMenu "GameplaySettings"
 {
 	Title "---------Game Settings---------"
@@ -379,6 +386,9 @@ OptionMenu "GameplaySettings"
 	StaticText " "
 	StaticText " "
 	option "Wall Penetration ","pb_wallpenetration","EnabledOption"
+	StaticText " "
+	StaticText " "
+	option "Monster weapon drops ","PB_WeaponDrops","MonsterDrops"
 	StaticText " "
 	StaticText " "
 	

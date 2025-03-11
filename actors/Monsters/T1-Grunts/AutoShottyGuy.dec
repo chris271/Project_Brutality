@@ -18,7 +18,7 @@ ACTOR ASGGuy : PB_Sergeant //Replaces ShotgunGuy
 	damagefactor "killme", 0.0
 	dAMAGEFACTOR "Avoid", 0.0
 	damagefactor "TeleportRemover", 0.0
-	DropItem "DropedASG"
+	DropItem "PB_ASGGuyDrop"
 	DropItem "PB_GrenadeAmmo" 5
 	PB_Monster.TailPitch 0.75
     States
@@ -2833,7 +2833,7 @@ ACTOR GibHalfASGGuy2: BigGibBase
 
 Actor Vanilla_ASGGuy : ASGGuy
 {
-	DropItem "DropedASG"
+	DropItem "PB_ASGGuyDrop"
     DropItem "PB_Shell"
 	DropItem "PB_GrenadeAmmo" 5
 	States

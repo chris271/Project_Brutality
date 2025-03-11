@@ -160,6 +160,7 @@ const MAXITERATIONS = 32676;
 
 #include "zscript/Monsters/PBMonster.zsc"
 #include "zscript/Monsters/PBMonsterAmmo.zsc"
+#include "zscript/Monsters/PBMonsterDrops.zsc"
 
 #include "zscript/Monsters/Special/BossBrain.zc"
 
