@@ -264,6 +264,7 @@ Class PB_M1Plasma : PB_WeaponBase
 				A_StopSound(CHAN_6);
 				A_StartSound("PLSULT", CHAN_WEAPON);
 				A_SetBlend("Blue", 0.6, 12);
+                EventHandler.SendInterfaceEvent(PlayerNumber(), "PB_HUDInterference", 20);
 				A_ZoomFactor(0.85);
 				A_FireProjectile("M1_HeatWave", 0, 0, 0, 0);
 				A_SpawnItemEx ("HeatBlastEffect3",0,0,16,0,0,0,0,SXF_NOCHECKPOSITION,0);

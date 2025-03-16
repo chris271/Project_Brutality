@@ -129,7 +129,7 @@ class PB_Deagle : PB_WeaponBase
 					A_FireProjectile("PB_50AE", frandom(-0.1,0.1),0,0,0, FPF_NOAUTOAIM, frandom(-0.1,0.1));
 					A_AlertMonsters();
 					PB_IncrementHeat(2);
-					PB_GunSmoke(0,0,0);
+					PB_GunSmoke_Deagle(0,5,5);
 					A_FireProjectile("YellowFlareSpawn",0,0,0,0);
 					PB_SpawnCasing("EmptyBrassDeagle",30,0,31,-frandom(1, 2),Frandom(2,6),Frandom(3,6));
 					A_Takeinventory("DeagleAmmo",1);
@@ -247,7 +247,6 @@ class PB_Deagle : PB_WeaponBase
 			TNT1 A 0 PB_jumpIfHasBarrel("IdleBarrel","IdleFlameBarrel","IdleIceBarrel");
 			TNT1 A 0 A_JumpIf(A_CheckAkimbo(), "ReloadDualWield");
 			TNT1 A 0 PB_checkReload("EmptyReload","Ready","NoAmmo",8,2);
-			TNT1 A 0 A_Jumpif(countinv(invoker.UnloaderToken) > 0, "EmptyReload");
 			TNT1 A 0 {
 				A_setinventory(invoker.UnloaderToken,0);
 				A_ZoomFactor(1.0);
@@ -290,17 +289,18 @@ class PB_Deagle : PB_WeaponBase
 			D1E0 FGHIJKLM 1;
 			TNT1 A 0 A_Startsound("weapons/deagle/CatchF",19,CHANF_OVERLAP);
 			D1E0 NOPQ 1;
-			TNT1 A 0 A_Jumpif(countinv(invoker.UnloaderToken) > 0, "UnloadedReload");
 			TNT1 A 0 A_Startsound("weapons/deagle/MagRelease",0,CHANF_OVERLAP);
 			D1E0 R 1;
 			TNT1 A 0 A_Startsound("weapons/deagle/magout",13,CHANF_OVERLAP);
 			TNT1 A 0 A_Startsound("PSRLOUT",24,CHANF_OVERLAP);
-			TNT1 A 0 PB_SpawnCasing("EmptyDeagleMag",30,12,16,1,-2,-2,false); //only drop mags if wasnt unloaded already
+			TNT1 A 0 {
+				if(!findinventory(invoker.UnloaderToken))
+					PB_SpawnCasing("EmptyDeagleMag",30,12,16,1,-2,-2,false); //only drop mags if wasnt unloaded already
+			}
 			D1E0 ST 1;
 			TNT1 A 0 A_Startsound("weapons/deagle/MagToss",0,CHANF_OVERLAP);
 			D1E0 UVWXYZ 1;
 			D1E1 ABCD 1;
-		UnloadedReload:
 			TNT1 A 0 A_Startsound("weapons/deagle/CatchF",0,CHANF_OVERLAP,0.5);
 			D1E1 EFG 1;
 			TNT1 A 0 A_Startsound("weapons/deagle/magin",0,CHANF_OVERLAP);
@@ -687,7 +687,7 @@ class PB_Deagle : PB_WeaponBase
 					PB_LowAmmoSoundWarning("pistol");
 					A_FireProjectile("PB_50AE", frandom(-0.1,0.1),0,0,0, FPF_NOAUTOAIM, frandom(-0.1,0.1));
 					A_AlertMonsters();
-					PB_GunSmoke(0,0,0);
+					PB_GunSmoke_Deagle(0,5,5);
 					PB_IncrementHeat(2);
 					A_FireProjectile("YellowFlareSpawn",0,0,0,0);
 					PB_SpawnCasing("EmptyBrassDeagle",26,0,38,-frandom(1, 2),Frandom(2,6),Frandom(3,6));
@@ -872,7 +872,7 @@ class PB_Deagle : PB_WeaponBase
 				PB_IncrementHeat(2, true);
 				A_SetFiringLeftWeapon(True);
 				A_FireProjectile("PB_50AE", frandom(-0.1,0.1),0,-6,0, FPF_NOAUTOAIM, frandom(-0.1,0.1));
-				PB_GunSmoke(15,0,6);
+				PB_GunSmoke_Deagle(15,0,6);
 				PB_SpawnCasing("EmptyBrassDeagle",26,-12,38,-frandom(1, 2),Frandom(2,6),Frandom(3,6));
 				A_StartSound("weapons/deagle/fire", 0, CHANF_OVERLAP, 1.0);
 				A_StartSound("weapons/deagle/afire", 0, CHANF_OVERLAP, 0.70);
@@ -966,7 +966,7 @@ class PB_Deagle : PB_WeaponBase
 					PB_IncrementHeat(2);	
 					A_SetFiringRightWeapon(True);
 					A_FireProjectile("PB_50AE", frandom(-0.1,0.1),0,6,0, FPF_NOAUTOAIM, frandom(-0.1,0.1));
-					PB_GunSmoke(-15,0,6);
+					PB_GunSmoke_Deagle(-15,0,6);
 					PB_SpawnCasing("EmptyBrassDeagle",26,25,38,-frandom(1, 2),Frandom(2,6),Frandom(3,6));
 					A_StartSound("weapons/deagle/fire", 0, CHANF_OVERLAP, 1.0);
 					A_StartSound("weapons/deagle/afire", 0, CHANF_OVERLAP, 0.70);

@@ -102,7 +102,7 @@ class PB_Projectile : FastProjectile abstract
 			if(victim.bNOBLOOD || victim.bINVULNERABLE || victim.bDORMANT || victim.bREFLECTIVE || (victim.bsolid && ! victim.bShootable))
 				SpawnPuff("PB_NoBloodPuff", pos, angle, 0, 0, PF_HITTHING);
 			else
-				victim.SpawnBlood( pos, angle, ceil(scaled_damage) );
+				victim.SpawnBlood( pos, angle, ceil(scaled_damage) );	
 		}
 		
 		victim.DamageMobj(self, target, ceil(scaled_damage), dmgType, 0, angle);
@@ -488,7 +488,7 @@ class PB_Projectile : FastProjectile abstract
 
 		if (distanceSq < WHIZ_PLRDIST_LIMIT)
 		{
-			string playerDist;
+			/*string playerDist;
 			if(distanceSq > WHIZ_PLRDIST_FAR)
 				playerDist = "far";
 			else if(distanceSq > WHIZ_PLRDIST_MED)
@@ -502,7 +502,7 @@ class PB_Projectile : FastProjectile abstract
 			else if(distanceTraveled > WHIZ_DIST_MED)
 				whizDist = "med";
 			else
-				whizDist = "near";
+				whizDist = "near";*/
 				
 			vector3 soundDir = (soundPosition - oldpos);
 			vector3 dir = (pos - oldpos);
@@ -511,10 +511,12 @@ class PB_Projectile : FastProjectile abstract
 			
 			if(dotProduct > 0.0 && dotProduct < bulletDist)	
 			{
-				sound whizSound = "whiz/"..whizDist.."/"..playerDist.."/in";
+				//sound whizSound = "whiz/"..whizDist.."/"..playerDist.."/in";
+				//A_StartSound("bulletcrack/"..playerDist, CHAN_AUTO);
+				sound whizSound = "whiz/near/near/in";
 
 				if(bWHIZCRACK) 
-					A_StartSound("bulletcrack/"..playerDist, CHAN_AUTO);
+					A_StartSound("bulletcrack/near", CHAN_AUTO);
 				else
 					A_StartSound(whizsound, CHAN_AUTO, pitch: frandom(0.9, 1.1));
 

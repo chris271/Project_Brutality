@@ -157,13 +157,6 @@ Class PB_SuperGL : PB_Weapon
 			}
 			goto ready;
 		
-		NoAmmo:
-			SL02 E 1 {
-				SGL_ChangeModeSprite("SL02","SL12","SL22","SL32","SL42","S001");
-				
-			}
-			goto ready3;
-		
 		Fire:
 			TNT1 A 0 PB_jumpIfHasBarrel("ThrowBarrel","ThrowFlameBarrel","ThrowIceBarrel");
 			TNT1 A 0 {
@@ -181,6 +174,7 @@ Class PB_SuperGL : PB_Weapon
 				A_TakeInventory("GrenadeRounds",1);
 				A_ZoomFactor(0.98);
 				A_GunFlash();
+				PB_GunSmoke_Launcher(0, 0, 0);
 			}
 			SL60 B 1 BRIGHT {
 				SGL_ChangeModeSprite("SL60","SL61","SL62","SL63","SL64");
@@ -1616,7 +1610,7 @@ Class FlakShell : Actor
 		+EXTREMEDEATH
 		+FORCEXYBILLBOARD
 		+CANBOUNCEWATER
-		+BOUNCEONWALLS; +BOUNCEONFLOORS; +ALLOWBOUNCEONACTORS; +BOUNCEAUTOOFF;
+		+DOOMBOUNCE
 		-EXPLODEONWATER
 		+CANBOUNCEWATER
 		BounceFactor 0.75;
@@ -1669,7 +1663,7 @@ Class SubFlakShell : actor
 		+EXTREMEDEATH
 		+FORCEXYBILLBOARD
 		+CANBOUNCEWATER
-		+BOUNCEONWALLS; +BOUNCEONFLOORS; +ALLOWBOUNCEONACTORS; +BOUNCEAUTOOFF;
+		+DOOMBOUNCE
 		-EXPLODEONWATER
 		+CANBOUNCEWATER
 		Gravity 0.8;
