@@ -106,6 +106,7 @@ class PB_Monster : Actor abstract
 			A_StartSound("weapons/atmo/med/int/"..tmpTailSound, 22, pitch: sndPitch);
 	}
 
+	// seeAllAround - Set whether a monster can look all around. Might be needed in some cases.
 	void A_SmartChase(statelabel s1 = "_a_chase_default", statelabel s2 = "_a_chase_default", int flags = 0, bool seeAllaround = false)
 	{
 		LookExParams Look;
@@ -144,7 +145,8 @@ class PB_Monster : Actor abstract
 				//self.FastSpeed = self.searchSpeed * 2;
 				tics = 2;
 			}
-			A_Wander();
+			//A_Wander();
+			A_Chase(s2, s1, flags);
 			//console.Printf("Wandered...");
 			if (retargetSkips <= 0) 
 			{
@@ -163,7 +165,7 @@ class PB_Monster : Actor abstract
 			}
 			patrolTimer++;
 			//console.Printf("Increment Patrol Timer - %d", patrolTimer);
-			//return;
+			return;
 		}
 		
 		// [DarynS] We've got a Target, figure out what to do with it.
@@ -280,7 +282,7 @@ class PB_Monster : Actor abstract
 				patrolTimer = 0;
 				if(self.searchSpeed) self.Speed = self.searchSpeed;
 				//self.FastSpeed = self.searchSpeed * 2;
-				target = NULL;
+				//target = NULL;
 				//console.Printf("Abandoning Chase");
 				return;
 			}
