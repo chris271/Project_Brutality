@@ -216,7 +216,7 @@ class PB_Hud_ZS : BaseStatusBar
 
         if(interference > 0 && random() < 100)
         {
-            S_StartSound("visor/interference", CHAN_AUTO, 0, 1, 0, frandom(0.75, 1.25));
+            S_StartSound("visor/interference", CHAN_AUTO);
             interference--;
         }
 		
@@ -371,7 +371,7 @@ class PB_Hud_ZS : BaseStatusBar
                     if(random() < 25)
                     {
                         helmetKernelPanic++;
-                       S_StartSound("visor/interference", CHAN_AUTO, 0, 1, 0, frandom(0.75, 1.25));
+                        S_StartSound("visor/interference", CHAN_AUTO);
                     }
                 }
 			}
@@ -1378,8 +1378,8 @@ class PB_Hud_ZS : BaseStatusBar
                     int spacing;
                     for(int i = 0; i < helmetKernelPanic; i++)
                     {
-                        PBHud_DrawString(mDefaultFont, KernelPanicMessages[i], (50, 50 + spacing), DI_TEXT_ALIGN_LEFT | DI_SCREEN_LEFT_TOP, FONT.CR_UNTRANSLATED, (i == KernelPanicMessages.Size() - 1) ? round(0.5*(1+sin(2 * M_PI * 1 * gameTic))) : 1.0, scale: (0.75,0.75), fuckFading: true);
-                        spacing += 15;
+                        PBHud_DrawString(mDefaultFont, KernelPanicMessages[i], (10, 10 + spacing), DI_TEXT_ALIGN_LEFT | DI_SCREEN_LEFT_TOP, FONT.CR_UNTRANSLATED, (i == KernelPanicMessages.Size() - 1) ? round(0.5*(1+sin(2 * M_PI * 1 * gameTic))) : 1.0, fuckFading: true);
+                        spacing += 20;
                     }
                 }
 			}

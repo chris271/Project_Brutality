@@ -156,6 +156,13 @@ Class PB_SuperGL : PB_Weapon
 				return A_DoPBWeaponAction(WRF_ALLOWRELOAD);
 			}
 			goto ready;
+
+        NoAmmo:
+			SL02 E 1 {
+				SGL_ChangeModeSprite("SL02","SL12","SL22","SL32","SL42","S001");
+				
+			}
+			goto ready3;
 		
 		Fire:
 			TNT1 A 0 PB_jumpIfHasBarrel("ThrowBarrel","ThrowFlameBarrel","ThrowIceBarrel");
@@ -1610,7 +1617,7 @@ Class FlakShell : Actor
 		+EXTREMEDEATH
 		+FORCEXYBILLBOARD
 		+CANBOUNCEWATER
-		+DOOMBOUNCE
+		BounceType "Doom";
 		-EXPLODEONWATER
 		+CANBOUNCEWATER
 		BounceFactor 0.75;
@@ -1663,8 +1670,8 @@ Class SubFlakShell : actor
 		+EXTREMEDEATH
 		+FORCEXYBILLBOARD
 		+CANBOUNCEWATER
-		+DOOMBOUNCE
-		-EXPLODEONWATER
+		BounceType "Doom";
+        -EXPLODEONWATER
 		+CANBOUNCEWATER
 		Gravity 0.8;
 		BounceFactor 0.4;

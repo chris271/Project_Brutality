@@ -361,13 +361,13 @@ class PB_GrenadeWarningFlare_Red : PB_GrenadeWarningFlare_Green
 	{
 		Spawn:
 			TNT1 A 0 A_SpawnItemEx ("ExplosionFlareSpawner", flags: SXF_NOCHECKPOSITION)
-			TNT1 AAA 0 A_CustomMissile ("ExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
-			TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
-			TNT1 AAA 0 A_CustomMissile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+			TNT1 AAA 0 A_SpawnProjectile ("ExplosionFlames", 0, 0, random (0, 360), 2, random (0, 360))
+			TNT1 AAA 0 A_SpawnProjectile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
+			TNT1 AAA 0 A_SpawnProjectile ("ExplosionParticleHeavy", 0, 0, random (0, 360), 2, random (0, 180))
 			BEXP B 0 BRIGHT A_Scream
 			TNT1 A 0 A_Playsound("excavator/explode", 1)
 			TNT1 A 0 A_SpawnItem("BarrelExplosionSmokeColumn")
-			TNT1 AAA 8 A_CustomMissile ("ExplosionSmoke", 1, 0, random (0, 360), 2, random (50, 130))
+			TNT1 AAA 8 A_SpawnProjectile ("ExplosionSmoke", 1, 0, random (0, 360), 2, random (50, 130))
 			Stop
 	}
 }*/
