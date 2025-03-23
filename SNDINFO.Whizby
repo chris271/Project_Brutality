@@ -130,14 +130,17 @@ $random whiz/near/med/in { whiz/near/med/in_1 whiz/near/med/in_2 whiz/near/med/i
 $rolloff whiz/near/med/in 200 5000
 $volume whiz/near/med/in 0.8
 
-whiz/near/near/in_1  "SOUNDS/Combat/subsonic_aggressive_01.ogg"
-whiz/near/near/in_2  "SOUNDS/Combat/subsonic_aggressive_02.ogg"
-whiz/near/near/in_3  "SOUNDS/Combat/subsonic_aggressive_03.ogg"
-whiz/near/near/in_4  "SOUNDS/Combat/subsonic_aggressive_04.ogg"
-whiz/near/near/in_5  "SOUNDS/Combat/subsonic_aggressive_05.ogg"
-whiz/near/near/in_6  "SOUNDS/Combat/subsonic_aggressive_06.ogg"
-whiz/near/near/in_7  "SOUNDS/Combat/subsonic_aggressive_07.ogg"
-$random whiz/near/near/in { whiz/near/near/in_1 whiz/near/near/in_2 whiz/near/near/in_3 whiz/near/near/in_4 whiz/near/near/in_5 whiz/near/near/in_6 whiz/near/near/in_7 }
+whiz/near/near/in_1  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_01.ogg"
+whiz/near/near/in_2  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_02.ogg"
+whiz/near/near/in_3  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_03.ogg"
+whiz/near/near/in_4  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_04.ogg"
+whiz/near/near/in_5  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_05.ogg"
+whiz/near/near/in_6  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_06.ogg"
+whiz/near/near/in_7  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_07.ogg"
+whiz/near/near/in_8  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_08.ogg"
+whiz/near/near/in_9  "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_09.ogg"
+whiz/near/near/in_10 "SOUNDS/Combat/Whizby/Normal/Fly In/whiz_near_near_in_10.ogg"
+$random whiz/near/near/in { whiz/near/near/in_1 whiz/near/near/in_2 whiz/near/near/in_3 whiz/near/near/in_4 whiz/near/near/in_5 whiz/near/near/in_6 whiz/near/near/in_7 whiz/near/near/in_8 whiz/near/near/in_9 whiz/near/near/in_10 }
 $rolloff whiz/near/near/in 200 5000
 $volume whiz/near/near/in 0.8
 
