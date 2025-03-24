@@ -216,7 +216,7 @@ class PB_Hud_ZS : BaseStatusBar
 
         if(interference > 0 && random() < 100)
         {
-            S_StartSound("visor/interference", CHAN_AUTO);
+           
             interference--;
         }
 		
@@ -371,7 +371,6 @@ class PB_Hud_ZS : BaseStatusBar
                     if(random() < 25)
                     {
                         helmetKernelPanic++;
-                        S_StartSound("visor/interference", CHAN_AUTO);
                     }
                 }
 			}
