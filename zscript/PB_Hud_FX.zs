@@ -64,7 +64,7 @@ extend class PB_Hud_ZS
 			glassCracks.Delete(0);
 
 		PB_CrackFXStorage crack = PB_CrackFXStorage.CreateCrackFX();
-		//cplayer.mo.A_StartSound("visor/glasscrack", CHAN_AUTO, CHANF_OVERLAP | CHANF_LOCAL | CHANF_UI, 0.7, pitch: frandom(0.96, 1.04));
+		cplayer.mo.A_StartSound("visor/glasscrack", CHAN_AUTO, CHANF_OVERLAP | CHANF_LOCAL | CHANF_UI, 0.7, pitch: frandom(0.96, 1.04));
 		glassCracks.Push(crack);
 	}
 	
