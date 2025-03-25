@@ -56,7 +56,7 @@ class PB_Footsteps : Actor
 			double soundVolume; //multiplied by 0.12 because raw value is too high to be used as volume
 
 			string speed;
-			if(isCrouched)
+			if(1 - isCrouched)
 				speed = "creep";
 			else if(playerVel2D >= 10)
 				speed = "run";
@@ -77,7 +77,7 @@ class PB_Footsteps : Actor
 				if (stepsound != "none")
 					toFollow.A_StartSound(stepsound, CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume);
 
-				toFollow.A_StartSound(speed.."/foley/post", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:playerVel2D * 0.05);
+				toFollow.A_StartSound(speed.."/foley/post", CHAN_AUTO, CHANF_LOCAL|CHANF_UI, volume:soundVolume);
 
 				//delay CVAR value is inverted, where 1.0 is default, higher means more frequent, smaller means less frequent
 				double dmul = (2.1 - Clamp(1.8,0.1,2));
