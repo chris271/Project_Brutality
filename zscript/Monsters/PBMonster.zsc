@@ -109,24 +109,18 @@ class PB_Monster : Actor abstract
 	// seeAllAround - Set whether a monster can look all around. Might be needed in some cases.
 	void A_SmartChase(statelabel s1 = "_a_chase_default", statelabel s2 = "_a_chase_default", int flags = 0, bool seeAllaround = false)
 	{
-		LookExParams Look;
-		look.fov = 150;
-		look.minDist = 0;
-		look.maxDist = 0;
-		look.maxHeardist = 0;
-		look.flags = LOF_NOJUMP;
-
+		
 		// Decrement the skips counter. When we reach 0 we Look for a new Target.
 		if (retargetSkips > 0) retargetSkips--;
 		//console.Printf("RetargetSkips: %i", retargetSkips);
-
+		
 		// Clear Target if it's a friend
 		if (Target && isFriend(Target))
 		{
 			A_ClearTarget();
 			//console.Printf("Clearing Friendly Target");
 		}
-
+		
 		// What to do when we're on Patrol.
 		if (!Target || OnPatrol)
 		{
@@ -153,6 +147,12 @@ class PB_Monster : Actor abstract
 				//console.Printf("Looking for Target.");
 				retargetSkips = 3;
 				//console.Printf("RetargetSkips Reset: %d", retargetSkips);
+				LookExParams Look;
+				look.fov = 150;
+				look.minDist = 0;
+				look.maxDist = 0;
+				look.maxHeardist = 0;
+				look.flags = LOF_NOJUMP;
 				LookForPlayers(seeAllaround, look);
 				if (Target)
 				{
