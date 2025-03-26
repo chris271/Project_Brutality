@@ -63,6 +63,7 @@ class PB_Hud_ZS : BaseStatusBar
 	bool hasPutOnHelmet, hasCompletedHelmetSequence;
 	bool deathFadeDone, playerWasDead;
     uint8 helmetKernelPanic;
+    bool muteinterference;
 	
 	vector2 poll1, poll2, resultSway;
 
@@ -216,7 +217,8 @@ class PB_Hud_ZS : BaseStatusBar
 
         if(interference > 0 && random() < 100)
         {
-            S_StartSound("visor/interference", CHAN_AUTO, CHANF_OVERLAP, 0.5);
+            if(!muteinterference)
+                S_StartSound("visor/interference", CHAN_AUTO, CHANF_OVERLAP, 0.5);
             interference--;
         }
 		
@@ -326,6 +328,7 @@ class PB_Hud_ZS : BaseStatusBar
 
     static const String KernelPanicMessages[] =
     {
+        "-----BEGIN KERNEL LOGFILE-----",
         "Inventory Management FAIL",
         "Low Blood Volume",
         "Administering Morphine",
@@ -341,14 +344,20 @@ class PB_Hud_ZS : BaseStatusBar
         "helm_mon(4): unexpected response from monitor GPIO pins",
         "Kernel panic - I/O failure: could not establish VITAL_LINK port (#338)",
         "UACnix kernel message: ERROR IN CPU: E10025U @ 20.50GHz - Small Advanced Devices, Inc.",
+        "\cfKERNEL DIES HERE -->\c- Kernel panic - not syncing: Unable to recover from unrecoverable error recovery.",
+        "-----END KERNEL LOGFILE-----",
+        "",
+        "-----BEGIN LOME LOGFILE-----",
         "LOME - UAC Microsystems, INC. Lights Out Management Engine v3.666",
         "LOME - System lost power at 00:00:00, Jan 1st, 1970",
         "LOME - Please replace CMOS battery!",
         "LOME - Automatic restart attempt...",
         "LOME - Automatic restart failed: could not establish uplink to MB_MAIN",
         "LOME - Initiating diagno$$##@@GaaE",
-        "[ \cjFAIL \c-] WATCHDOG VIOLATION",
-        "Total system failure: please contact UAC Microsystems for support."
+        "\cfMNGMT ENGINE DIES HERE -->\c- [ FAIL ] WATCHDOG VIOLATION",
+        "-----END LOME LOGFILE-----",
+        "",
+        "\cgTotal system failure: please contact UAC Microsystems for support.\c-"
     };
 	
 	void DeathSequence(bool Death) {
@@ -356,6 +365,7 @@ class PB_Hud_ZS : BaseStatusBar
 			if(HasPutOnHelmet)
 			{
                 SetMusicVolume(0);
+                muteinterference = true;
                 if(m0to1Float > 0.0 && !DeathFadeDone)
                 {
                     m0to1Float *= (randompick(50, 100, 150) * 0.01);
@@ -379,6 +389,7 @@ class PB_Hud_ZS : BaseStatusBar
 	  
 		if(!death) {
             SetMusicVolume(1);
+            muteinterference = false;
             helmetKernelPanic = 0;
 			m0to1Float = 1.0;
 			DeathFadeDone = False;
@@ -525,6 +536,24 @@ class PB_Hud_ZS : BaseStatusBar
 		}
 
 		SetSway(pos.x, pos.y, fakeflags, parallax, parallax2);
+
+        if(interference > 1)
+        {
+            string stringBuffer;
+            for (int i = 0; i < string.Length();)
+            {
+                int chr, next;
+                [chr, next] = string.GetNextCodePoint(i);
+
+                if(interference > random[interference](0, 50))
+                    stringBuffer.AppendCharacter(random("!", "~"));
+                else
+                    stringBuffer.AppendCharacter(chr);
+
+                i = next;
+            }
+            string = stringBuffer;
+        }
 
 		DrawString(font, string, pos, flags, translation, fuckFading ? Alpha : (m0to1Float * Alpha), wrapwidth, linespacing, scale);
 	}
@@ -1378,7 +1407,7 @@ class PB_Hud_ZS : BaseStatusBar
                     int spacing;
                     for(int i = 0; i < helmetKernelPanic; i++)
                     {
-                        PBHud_DrawString(mDefaultFont, KernelPanicMessages[i], (10, 10 + spacing), DI_TEXT_ALIGN_LEFT | DI_SCREEN_LEFT_TOP, FONT.CR_UNTRANSLATED, (i == KernelPanicMessages.Size() - 1) ? round(0.5*(1+sin(2 * M_PI * 1 * gameTic))) : 1.0, fuckFading: true);
+                        PBHud_DrawString(mDefaultFont, KernelPanicMessages[i], (15, 17 + spacing), DI_TEXT_ALIGN_LEFT | DI_SCREEN_LEFT_TOP, FONT.CR_UNTRANSLATED, (i == KernelPanicMessages.Size() - 1) ? round(0.5*(1+sin(2 * M_PI * 1 * gameTic))) : 1.0, fuckFading: true);
                         spacing += 20;
                     }
                 }
