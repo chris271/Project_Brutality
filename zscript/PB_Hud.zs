@@ -540,7 +540,7 @@ class PB_Hud_ZS : BaseStatusBar
         if(interference > 1)
         {
             string stringBuffer;
-            for (int i = 0; i < string.Length();)
+            for (uint i = 0; i < string.Length();)
             {
                 int chr, next;
                 [chr, next] = string.GetNextCodePoint(i);
