@@ -41,6 +41,8 @@ class PB_Hud_ZS : BaseStatusBar
 	//https://forum.zdoom.org/viewtopic.php?t=33409
 	HUDFont mLowResFont;
 
+    HUDFont mTerminalFont;
+
 	DynamicValueInterpolator mHealthInterpolator;
 	DynamicValueInterpolator mArmorInterpolator;
 	DynamicValueInterpolator mAmmo1Interpolator;
@@ -93,6 +95,7 @@ class PB_Hud_ZS : BaseStatusBar
 		mDefaultFont = HUDFont.Create("PBFONT");
 		mBoldFont = HUDFont.Create("PBBOLD");
 		mLowResFont = HUDFont.Create("LOWQFONT");
+        mTerminalFont = HUDFont.Create("codepage");
 
 		//invbar = InventoryBarState.CreateNoBox(mBoldFont);
 		
@@ -895,6 +898,24 @@ class PB_Hud_ZS : BaseStatusBar
 						flsectorlightcolor = Color(255, slcol.r, slcol.g, slcol.b);
 					else
 						flsectorlightcolor = 0xffffffff;
+
+                    vector2 posbuffer = (Screen.GetWidth() / 2.f, Screen.GetHeight() / 2.f);
+                    vector2 hudscale = GetHUDScale();
+                    posbuffer.x /= hudscale.x;
+                    posbuffer.y /= hudscale.y;
+                    SetSway(posbuffer.x, posbuffer.y, 0, 0.6, 0.15, false, false);
+                    posbuffer.x *= hudscale.x;
+                    posbuffer.y *= hudscale.y;
+
+                    // dirt and scratches
+                    Screen.DrawTexture(TexMan.CheckForTexture("GRAPHICS/LensDirt.png"), false, 
+                        posbuffer.x, posbuffer.y, 
+                        DTA_DestWidth, Screen.GetWidth(), DTA_DestHeight, Screen.GetHeight(), 
+                        DTA_Alpha, 0.5 + (sectorlightlevel * 0.5), 
+                        DTA_Color, flsectorlightcolor, 
+                        DTA_CenterOffset, true, 
+                        DTA_ScaleX, 1.25, DTA_ScaleY, 1.25
+                    );
 						
 					// darkness underlays
 				  	PBHud_DrawImageManualAlpha("HUDTDARK", (-35 - m32to0, -9 - m32to0) , DI_SCREEN_LEFT_TOP|DI_ITEM_LEFT_TOP, 1, scale: (0.7, 0.7), col: flsectorlightcolor);  
@@ -1405,10 +1426,10 @@ class PB_Hud_ZS : BaseStatusBar
                 if(helmetKernelPanic > 0)
                 {
                     int spacing;
-                    for(int i = 0; i < helmetKernelPanic; i++)
+                    for(int i = helmetKernelPanic; i > 0; i--)
                     {
-                        PBHud_DrawString(mDefaultFont, KernelPanicMessages[i], (15, 17 + spacing), DI_TEXT_ALIGN_LEFT | DI_SCREEN_LEFT_TOP, FONT.CR_UNTRANSLATED, (i == KernelPanicMessages.Size() - 1) ? round(0.5*(1+sin(2 * M_PI * 1 * gameTic))) : 1.0, fuckFading: true);
-                        spacing += 20;
+                        PBHud_DrawString(mTerminalFont, KernelPanicMessages[i - 1], (16, -37 + spacing), DI_TEXT_ALIGN_LEFT | DI_SCREEN_LEFT_BOTTOM | DI_ITEM_LEFT_BOTTOM, FONT.CR_UNTRANSLATED, (i - 1 == KernelPanicMessages.Size() - 1) ? round(0.5*(1+sin(2 * M_PI * 1 * gameTic))) : 1.0, fuckFading: true);
+                        spacing -= 20;
                     }
                 }
 			}
