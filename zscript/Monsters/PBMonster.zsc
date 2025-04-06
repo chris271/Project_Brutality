@@ -71,42 +71,56 @@ class PB_Monster : Actor abstract
 
 	action void PB_DynamicTailMonster(string tailInside, string tailOutside)
 	{	
-		string tmpTailSound;
+		double sndPitch = frandom(0.75, 1.25) * invoker.tailPitch;
+		double dist = Distance3D(players[consoleplayer].mo);
+
 		if(Ceilingpic == SkyFlatNum && tailOutside)
-			tmpTailSound = "ext/"..tailOutside;
+			PB_PlayTailExt(tailOutside, sndPitch, dist);
 		else if(tailInside)
-			tmpTailSound = "int/"..tailInside;
+			PB_PlayTailInt(tailInside, sndPitch, dist);
 		else 
 			return;
-
-		double sndPitch = frandom(0.75, 1.25) * invoker.tailPitch;
-		
-		A_StartSound("weapons/atmo/"..tmpTailSound, 19, volume: 0.5, pitch: sndPitch);
-		A_StartSound("weapons/atmo/dist/"..tmpTailSound, 20, volume: 0.6, pitch: sndPitch);
-		A_StartSound("weapons/atmo/far/"..tmpTailSound, 21, pitch: sndPitch);
-		A_StartSound("weapons/atmo/med/"..tmpTailSound, 22, pitch: sndPitch);
 	}
 
+	action void PB_PlayTailExt(string tmpTailSound, double sndPitch, double dist)
+	{
+		A_StartSound("weapons/atmo/ext/"..tmpTailSound, 19, volume: 0.5, pitch: sndPitch);
+		
+		if(dist >= 4500)
+			A_StartSound("weapons/atmo/dist/ext/"..tmpTailSound, 20, volume: 0.6, pitch: sndPitch);
+		if(dist >= 1250 && dist < 7500)
+			A_StartSound("weapons/atmo/far/ext/"..tmpTailSound, 21, pitch: sndPitch);
+		if(dist >= 200 && dist < 4500)
+			A_StartSound("weapons/atmo/med/ext/"..tmpTailSound, 22, pitch: sndPitch);
+	}
+
+	action void PB_PlayTailInt(string tmpTailSound, double sndPitch, double dist)
+	{
+		A_StartSound("weapons/atmo/int/"..tmpTailSound, 19, volume: 0.5, pitch: sndPitch);
+		
+		if(dist >= 2500)
+			A_StartSound("weapons/atmo/dist/int/"..tmpTailSound, 20, volume: 0.6, pitch: sndPitch);
+		if(dist >= 1250 && dist < 3500)
+			A_StartSound("weapons/atmo/far/int/"..tmpTailSound, 21, pitch: sndPitch);
+		if(dist >= 200 && dist < 2500)
+			A_StartSound("weapons/atmo/med/int/"..tmpTailSound, 22, pitch: sndPitch);
+	}
+
+	// seeAllAround - Set whether a monster can look all around. Might be needed in some cases.
 	void A_SmartChase(statelabel s1 = "_a_chase_default", statelabel s2 = "_a_chase_default", int flags = 0, bool seeAllaround = false)
 	{
-		LookExParams Look;
-		look.fov = 150;
-		look.minDist = 0;
-		look.maxDist = 0;
-		look.maxHeardist = 0;
-		look.flags = LOF_NOJUMP;
-
+		
 		// Decrement the skips counter. When we reach 0 we Look for a new Target.
 		if (retargetSkips > 0) retargetSkips--;
 		//console.Printf("RetargetSkips: %i", retargetSkips);
-
+		
 		// Clear Target if it's a friend
 		if (Target && isFriend(Target))
 		{
 			A_ClearTarget();
 			//console.Printf("Clearing Friendly Target");
 		}
-
+		
 		// What to do when we're on Patrol.
 		if (!Target || OnPatrol)
 		{
@@ -125,13 +139,20 @@ class PB_Monster : Actor abstract
 				//self.FastSpeed = self.searchSpeed * 2;
 				tics = 2;
 			}
-			A_Wander();
+			//A_Wander();
+			A_Chase(s2, s1, flags);
 			//console.Printf("Wandered...");
 			if (retargetSkips <= 0) 
 			{
 				//console.Printf("Looking for Target.");
 				retargetSkips = 3;
 				//console.Printf("RetargetSkips Reset: %d", retargetSkips);
+				LookExParams Look;
+				look.fov = 150;
+				look.minDist = 0;
+				look.maxDist = 0;
+				look.maxHeardist = 0;
+				look.flags = LOF_NOJUMP;
 				LookForPlayers(seeAllaround, look);
 				if (Target)
 				{
@@ -144,7 +165,7 @@ class PB_Monster : Actor abstract
 			}
 			patrolTimer++;
 			//console.Printf("Increment Patrol Timer - %d", patrolTimer);
-			//return;
+			return;
 		}
 		
 		// [DarynS] We've got a Target, figure out what to do with it.
@@ -261,7 +282,7 @@ class PB_Monster : Actor abstract
 				patrolTimer = 0;
 				if(self.searchSpeed) self.Speed = self.searchSpeed;
 				//self.FastSpeed = self.searchSpeed * 2;
-				target = NULL;
+				//target = NULL;
 				//console.Printf("Abandoning Chase");
 				return;
 			}

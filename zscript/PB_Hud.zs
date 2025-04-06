@@ -41,6 +41,8 @@ class PB_Hud_ZS : BaseStatusBar
 	//https://forum.zdoom.org/viewtopic.php?t=33409
 	HUDFont mLowResFont;
 
+    HUDFont mTerminalFont;
+
 	DynamicValueInterpolator mHealthInterpolator;
 	DynamicValueInterpolator mArmorInterpolator;
 	DynamicValueInterpolator mAmmo1Interpolator;
@@ -62,6 +64,8 @@ class PB_Hud_ZS : BaseStatusBar
 	double m0to1Float;
 	bool hasPutOnHelmet, hasCompletedHelmetSequence;
 	bool deathFadeDone, playerWasDead;
+    uint8 helmetKernelPanic;
+    bool muteinterference;
 	
 	vector2 poll1, poll2, resultSway;
 
@@ -81,9 +85,7 @@ class PB_Hud_ZS : BaseStatusBar
 	float playerAlpha, playerBoxAlpha, messageSize, bloodDropsAlpha, glassCracksAlpha;
 
 	bool centerNotify;
-
-	//For addon devs and mappers
-	bool skipDrawing;
+  
 	
 	override void Init()
 	{
@@ -93,6 +95,7 @@ class PB_Hud_ZS : BaseStatusBar
 		mDefaultFont = HUDFont.Create("PBFONT");
 		mBoldFont = HUDFont.Create("PBBOLD");
 		mLowResFont = HUDFont.Create("LOWQFONT");
+        mTerminalFont = HUDFont.Create("codepage");
 
 		//invbar = InventoryBarState.CreateNoBox(mBoldFont);
 		
@@ -108,8 +111,6 @@ class PB_Hud_ZS : BaseStatusBar
 		mFOffsetInterpolator = PB_DynamicDoubleInterpolator.Create(0, 0.5, 0, 64);
 
 		InvBar = InventoryBarState.Create();
-
-		skipDrawing = false;
 	}
 	
 	void GatherCvars()
@@ -151,8 +152,6 @@ class PB_Hud_ZS : BaseStatusBar
 
 	override void Draw(int state, double TicFrac)
 	{
-		if(skipDrawing) return;
-
 		Super.Draw(state, TicFrac);
 
 		if(menuactive || consolestate == c_up) 
@@ -206,6 +205,25 @@ class PB_Hud_ZS : BaseStatusBar
 	override void Tick()
 	{
 		Super.Tick();
+
+        if(CPlayer.Health <= 0) 
+        {
+            DeathSequence(true);
+            PlayerWasDead = true;
+        }
+        
+        if(CPlayer.Health >= 1 && PlayerWasDead) 
+        {
+            DeathSequence(false);
+            PlayerWasDead = false;
+        }
+
+        if(interference > 0 && random() < 100)
+        {
+            if(!muteinterference)
+                S_StartSound("visor/interference", CHAN_AUTO, CHANF_OVERLAP, 0.5);
+            interference--;
+        }
 		
 		PBHUD_TickMessages();
 		TickBloodDrops();
@@ -310,21 +328,72 @@ class PB_Hud_ZS : BaseStatusBar
 			HasCompletedHelmetSequence = true;
 		}
 	}
+
+    static const String KernelPanicMessages[] =
+    {
+        "-----BEGIN KERNEL LOGFILE-----",
+        "Inventory Management FAIL",
+        "Low Blood Volume",
+        "Administering Morphine",
+        "INSUFFICIENT POWER",
+        "INSUFFICIENT POWER",
+        "CRITICAL PROCESS hudman(10) DIED",
+        "RESTARTING PROCESS hudman",
+        "PROCESS hudman STARTED AT PID 100",
+        "UACnix kernel message: RAM BANK #0 FAIL - FALLBACK",
+        "UACnix kernel message: RAM BANK #1 FAIL - FALLBACK",
+        "UACnix kernel message: OVERVOLTAGE DETECTED FROM CPU POWER",
+        "UACnix kernel message: RAM_MANAGEMENT: KILLED oskrnlio(2)",
+        "helm_mon(4): unexpected response from monitor GPIO pins",
+        "Kernel panic - I/O failure: could not establish VITAL_LINK port (#338)",
+        "UACnix kernel message: ERROR IN CPU: E10025U @ 20.50GHz - Small Advanced Devices, Inc.",
+        "\cfKERNEL DIES HERE -->\c- Kernel panic - not syncing: Unable to recover from unrecoverable error recovery.",
+        "-----END KERNEL LOGFILE-----",
+        "",
+        "-----BEGIN LOME LOGFILE-----",
+        "LOME - UAC Microsystems, INC. Lights Out Management Engine v3.666",
+        "LOME - System lost power at 00:00:00, Jan 1st, 1970",
+        "LOME - Please replace CMOS battery!",
+        "LOME - Automatic restart attempt...",
+        "LOME - Automatic restart failed: could not establish uplink to MB_MAIN",
+        "LOME - Initiating diagno$$##@@GaaE",
+        "\cfMNGMT ENGINE DIES HERE -->\c- [ FAIL ] WATCHDOG VIOLATION",
+        "-----END LOME LOGFILE-----",
+        "",
+        "\cgTotal system failure: please contact UAC Microsystems for support.\c-"
+    };
 	
 	void DeathSequence(bool Death) {
 		if(death) {
-			if(HasPutOnHelmet && m0to1Float > 0.0 && !DeathFadeDone)
+			if(HasPutOnHelmet)
 			{
-				m0to1Float *= (randompick(50, 100, 150) * 0.01);
-				
-				if(m0to1Float <= 0.0) 
-				{
-					DeathFadeDone = True;
-				}
+                SetMusicVolume(0);
+                muteinterference = true;
+                if(m0to1Float > 0.0 && !DeathFadeDone)
+                {
+                    m0to1Float *= (randompick(50, 100, 150) * 0.01);
+                    
+                    if(m0to1Float <= 0.0) 
+                    {
+                        DeathFadeDone = True;
+                    }
+                }
+
+                if(helmetKernelPanic < KernelPanicMessages.Size())
+                {
+                    if(random() < 25)
+                    {
+                        helmetKernelPanic++;
+						S_StartSound("visor/interference", CHAN_AUTO, CHANF_OVERLAP, 0.5);
+                    }
+                }
 			}
 		}
 	  
 		if(!death) {
+            SetMusicVolume(1);
+            muteinterference = false;
+            helmetKernelPanic = 0;
 			m0to1Float = 1.0;
 			DeathFadeDone = False;
 		}
@@ -444,7 +513,7 @@ class PB_Hud_ZS : BaseStatusBar
 		return ( flags & flag ) == flag;
 	}
 	
-	void PBHud_DrawString(HUDFont font, String string, Vector2 pos, int flags = 0, int translation = Font.CR_UNTRANSLATED, double Alpha = 1., int wrapwidth = -1, int linespacing = 4, Vector2 scale = (1, 1), double Parallax = 0.75, double Parallax2 = 0.25) 
+	void PBHud_DrawString(HUDFont font, String string, Vector2 pos, int flags = 0, int translation = Font.CR_UNTRANSLATED, double Alpha = 1., int wrapwidth = -1, int linespacing = 4, Vector2 scale = (1, 1), double Parallax = 0.75, double Parallax2 = 0.25, bool fuckFading = false) 
 	{	   
 		int fakeflags; //because my dumb ass didn't add screen alignment flags when i made this
 		
@@ -471,7 +540,25 @@ class PB_Hud_ZS : BaseStatusBar
 
 		SetSway(pos.x, pos.y, fakeflags, parallax, parallax2);
 
-		DrawString(font, string, pos, flags, translation, (m0to1Float * Alpha), wrapwidth, linespacing, scale);
+        if(interference > 1)
+        {
+            string stringBuffer;
+            for (uint i = 0; i < string.Length();)
+            {
+                int chr, next;
+                [chr, next] = string.GetNextCodePoint(i);
+
+                if(interference > random[interference](0, 50))
+                    stringBuffer.AppendCharacter(random("!", "~"));
+                else
+                    stringBuffer.AppendCharacter(chr);
+
+                i = next;
+            }
+            string = stringBuffer;
+        }
+
+		DrawString(font, string, pos, flags, translation, fuckFading ? Alpha : (m0to1Float * Alpha), wrapwidth, linespacing, scale);
 	}
 
 	void PBHUD_DrawSlantedBar(String ongfx, String offgfx, double curval, double maxval, vector2 position, int border, int vertical, int flags = 0, double alpha = 1.0)
@@ -811,6 +898,24 @@ class PB_Hud_ZS : BaseStatusBar
 						flsectorlightcolor = Color(255, slcol.r, slcol.g, slcol.b);
 					else
 						flsectorlightcolor = 0xffffffff;
+
+                    vector2 posbuffer = (Screen.GetWidth() / 2.f, Screen.GetHeight() / 2.f);
+                    vector2 hudscale = GetHUDScale();
+                    posbuffer.x /= hudscale.x;
+                    posbuffer.y /= hudscale.y;
+                    SetSway(posbuffer.x, posbuffer.y, 0, 0.6, 0.15, false, false);
+                    posbuffer.x *= hudscale.x;
+                    posbuffer.y *= hudscale.y;
+
+                    // dirt and scratches
+                    Screen.DrawTexture(TexMan.CheckForTexture("GRAPHICS/LensDirt.png"), false, 
+                        posbuffer.x, posbuffer.y, 
+                        DTA_DestWidth, Screen.GetWidth(), DTA_DestHeight, Screen.GetHeight(), 
+                        DTA_Alpha, 0.5 + (sectorlightlevel * 0.5), 
+                        DTA_Color, flsectorlightcolor, 
+                        DTA_CenterOffset, true, 
+                        DTA_ScaleX, 1.25, DTA_ScaleY, 1.25
+                    );
 						
 					// darkness underlays
 				  	PBHud_DrawImageManualAlpha("HUDTDARK", (-35 - m32to0, -9 - m32to0) , DI_SCREEN_LEFT_TOP|DI_ITEM_LEFT_TOP, 1, scale: (0.7, 0.7), col: flsectorlightcolor);  
@@ -950,18 +1055,6 @@ class PB_Hud_ZS : BaseStatusBar
 			}
 			
 			//DrawMessagesInArray();
-			
-			if(CPlayer.Health <= 0) 
-			{
-			  DeathSequence(true);
-			  PlayerWasDead = true;
-			}
-			
-			if(CPlayer.Health >= 1 && PlayerWasDead) 
-			{
-			  DeathSequence(false);
-			  PlayerWasDead = false;
-			}
 
 			////////////////////////////////////
 			//		 AMMOBAR HUD			//
@@ -1329,6 +1422,16 @@ class PB_Hud_ZS : BaseStatusBar
 						}
 						break;
 				}
+
+                if(helmetKernelPanic > 0)
+                {
+                    int spacing;
+                    for(int i = helmetKernelPanic; i > 0; i--)
+                    {
+                        PBHud_DrawString(mTerminalFont, KernelPanicMessages[i - 1], (16, -37 + spacing), DI_TEXT_ALIGN_LEFT | DI_SCREEN_LEFT_BOTTOM | DI_ITEM_LEFT_BOTTOM, FONT.CR_UNTRANSLATED, (i - 1 == KernelPanicMessages.Size() - 1) ? round(0.5*(1+sin(2 * M_PI * 1 * gameTic))) : 1.0, fuckFading: true);
+                        spacing -= 20;
+                    }
+                }
 			}
 		}
 	}

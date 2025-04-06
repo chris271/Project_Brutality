@@ -318,6 +318,11 @@ class NashGoreBlood : NashGoreBloodBase replaces Blood
 					frandom[rnd_SpawnBloodParticle1](0.0, 360.0), BLOOD_FLAGS | SXF_TRANSFERPOINTERS, cmul);
 			}
 			
+            int cloudCount = randompick(0, 0, 0, 0, 0, 0, 1, 2, 3);
+			for (int i = 0; i < cloudCount; i++)
+			{
+				SpawnMainPuffSecondary();
+			}
 		}
 		TNT1 AA 1 {
 			let[amt, cmul] = NashGoreStatics.GetAmountMult(nashgore_bloodmult, chanceMod);
@@ -352,6 +357,46 @@ class NashGoreBlood : NashGoreBloodBase replaces Blood
 		}*/
 		Stop;
 	}
+
+    void SpawnMainPuffSecondary()
+	{
+		FSpawnParticleParams PUFSPRK;
+
+		if(target)
+			CopyBloodColor(target);
+		if(bloodcolor == 0)
+			PUFSPRK.Color1 = "680000";
+		else
+		{
+			Color bcbuffer;
+			bcbuffer = Color(bloodcolor.r / 2, bloodcolor.g / 2, bloodcolor.r / 2);
+			PUFSPRK.Color1 = bcbuffer;
+		}
+		PUFSPRK.Texture = TexMan.CheckForTexture("X103"..String.Format("%c", 97 + random[jtbs](0, 25)).."0");
+		
+		PUFSPRK.Style = STYLE_TRANSLUCENT;
+		PUFSPRK.Flags = SPF_ROLL | SPF_REPLACE;
+		
+		PUFSPRK.Startroll = random[jtbs](0, 359);
+		PUFSPRK.RollVel = frandom[jtbs](-2, 2);
+		PUFSPRK.StartAlpha = frandom(0.2, 0.45);
+		PUFSPRK.Size = random[jtbs](26, 100);
+		PUFSPRK.SizeStep = 2;
+		PUFSPRK.Lifetime = random[jtbs](250, 450); 
+		PUFSPRK.RollAcc = -PUFSPRK.RollVel / double(PUFSPRK.Lifetime);
+
+		vector3 vls = (frandom(-30, 30), frandom(-30, 30), frandom(-30, 30));
+		
+		PUFSPRK.Vel = vls.Unit() * 0.2;
+		
+		//PUFSPRK.accel = (vls * (1.0 / double(PUFSPRK.Lifetime)));
+		//if(CeilingPic == SkyFlatNum)
+		//	PUFSPRK.accel += (-0.01, 0.02, 0.01);
+			
+		PUFSPRK.FadeStep = -1;
+		PUFSPRK.Pos = pos + vls;
+		Level.SpawnParticle(PUFSPRK);
+	}
 }
 
 class NashGoreBlood_Green : NashGoreBlood
@@ -378,7 +423,7 @@ class NashGoreBloodParticle1 : NashGoreBloodBase
 {
 	Default
 	{
-		Scale 0.5;
+		Scale 0.6;
 		Gravity 0.9;
 		+NOCLIP
 		+CORPSE
