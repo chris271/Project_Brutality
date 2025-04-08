@@ -2,6 +2,11 @@ AddOptionMenu "OptionsMenu"
 {
 	Submenu "Project Brutality Settings", "PBSettings"
 }
+AddOptionMenu "OptionsMenuSimple"
+{
+	Submenu "Project Brutality Settings", "PBSettings"
+}
+
 
 //Key : Value
 //PB_<monster code name>, monster name
