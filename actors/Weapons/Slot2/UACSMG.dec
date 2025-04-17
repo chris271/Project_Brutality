@@ -1402,7 +1402,7 @@ ACTOR PB_SMG : PB_Weapon
 		//TNT1 A 0 A_Print("weapons/smg_in")
 		TNT1 A 0 {
 			if(!FindInventory("UACSMGHasUnloaded") && FindInventory("UACSMGWasEmpty")) {
-				A_Print("weapons/smg_in");
+				//A_Print("weapons/smg_in");
 				A_PlaySoundEx("weapons/smg_in", "Auto");
 			}
 		}
