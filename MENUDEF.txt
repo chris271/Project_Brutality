@@ -516,6 +516,10 @@ OptionMenu "GameplaySettings"
 	StaticText "$PB_CRYOWARMUP_DESC3"
 	StaticText "$PB_CRYOWARMUP_NO"
 	StaticText " "
+	StaticText "(Experimental Tweaks)"
+	Option "Quad Shotgun Quad-Load", "pb_qsgquadload", "OnOff"
+	StaticText "Allows Quad-Shotgun to reload all four shells at once. Only happens if the option to keep the SSG is off, or if keeping weapons is disabled."
+	StaticText " "
 }
 
 OptionMenu "RenderingSettings"
