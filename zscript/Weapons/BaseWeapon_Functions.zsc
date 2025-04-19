@@ -2223,7 +2223,9 @@ extend class PB_WeaponBase
 		A_Stop();
 		SetOrigin((Pos.X, Pos.Y, plr.LedgeHeightMax), True);
 	}
-	
+	Action Bool GetUserCvarBool(Name CvarName){
+		return Cvar.GetCvar(CvarName,player).GetBool();
+	}
 	action state PB_RespectIfNeeded()
 	{
 		//A_Log("PB_RespectIfNeeded");
