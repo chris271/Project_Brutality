@@ -97,7 +97,7 @@ class PB_WeaponBase : DoomWeapon
 	Name WeaponUpgradeKeepCvar;
 	Property UpgradeKeepCvar : WeaponUpgradeKeepCvar;
 	override bool CheckAmmo(int fireMode, bool autoSwitch, bool requireAmmo, int ammocount){
-		if(!pb_keepweapons){
+		if(!Cvar.GetCVar("pb_keepweapons", owner.player).GetBool()){
 			if(FindInventory(UpgradedWeapon)){
 				if(WeaponUpgradeKeepCvar && Cvar.GetCVar(WeaponUpgradeKeepCvar, owner.player).GetBool() == false){return false;}
 			}
