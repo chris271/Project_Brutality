@@ -177,10 +177,11 @@ class PlayerPawnBase : PlayerPawn
 
 	override int DamageMobj(Actor inflictor, Actor source, int damage, Name mod, int flags, double angle) 
 	{
-		int result = super.DamageMobj(inflictor, source, damage, mod, flags, angle);
-		// Reset damagecount after damage processing to avoid the red flash.
-		player.damagecount = 0;
-		return result;
+	int result = super.DamageMobj(inflictor, source, damage, mod, flags, angle);
+	// Reset damagecount after damage processing to avoid the red flash.
+	if (player.damagecount > 10)
+	    player.damagecount = 10;
+	return result;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
