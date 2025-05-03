@@ -99,6 +99,9 @@ class PB_WeaponBase : DoomWeapon
 	Property Downgrade : DowngradeWeapon;
 	Property UnUpgraded : DowngradeWeapon;
 	
+	int ReserveToMagAmmoFactor;
+	property ReserveToMagAmmoFactor:ReserveToMagAmmoFactor;
+	
 	Name WeaponUpgradeKeepCvar;
 	Property UpgradeKeepCvar : WeaponUpgradeKeepCvar;
 	override bool CheckAmmo(int fireMode, bool autoSwitch, bool requireAmmo, int ammocount){
@@ -109,11 +112,19 @@ class PB_WeaponBase : DoomWeapon
 		}
 		return Super.CheckAmmo(fireMode, autoSwitch, requireAmmo, ammocount);
 	}
-	
 	override bool HandlePickup(Inventory item){
 		if(item is "PB_WeaponBase"){
+			//self.ReserveToMagAmmoFactor = PB_WeaponBase(GetDefaultByType(self.GetClass())).ReserveToMagAmmoFactor;
 			if(UpgradedWeapon && UpgradedWeapon == item.GetClass() && !Cvar.GetCVar("pb_keepweapons", owner.player).GetBool()){
 				if(WeaponUpgradeKeepCvar && Cvar.GetCVar(WeaponUpgradeKeepCvar, owner.player).GetBool() == false){
+					while(owner.FindInventory(AmmoType2).amount > 0){
+						owner.FindInventory(AmmoType2).amount -= 1;
+						owner.FindInventory(AmmoType1).amount += self.ReserveToMagAmmoFactor;
+					}
+					while(owner.FindInventory(AmmoTypeLeft).amount > 0){
+						owner.FindInventory(AmmoTypeLeft).amount -= 1;
+						owner.FindInventory(AmmoType1).amount += self.ReserveToMagAmmoFactor;
+					}
 					While(owner && self.amount > 0){owner.DropInventory(self,1);}
 				}
 			}else if(
@@ -222,6 +233,7 @@ class PB_WeaponBase : DoomWeapon
 		PB_WeaponBase.WheelInfo "";
 		PB_WeaponBase.TailSoundVolume 0.8;
 		PB_WeaponBase.MuzzleSmokeColor "FFFFFF";
+		PB_WeaponBase.ReserveToMagAmmoFactor 1;
 		//Weapon.WeaponScaleX 1.2;
 		+DONTGIB
 	}
