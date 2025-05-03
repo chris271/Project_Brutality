@@ -522,7 +522,7 @@ Class PBArchvileFire : Actor Replaces ArchvileFire{
 	}
 	Override Void Tick(){
 		if(!(target && target.health > 0)){Scale -= GetDefaultByType(self.GetClass()).Scale/10;}
-		if(Scale <= 0){self.Destroy();}
+		if(Scale.x <= 0 || Scale.y <= 0){self.Destroy();}
 		Super.Tick();
 	}
 	States{
