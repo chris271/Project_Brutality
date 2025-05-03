@@ -111,41 +111,43 @@ class PB_WeaponBase : DoomWeapon
 	}
 	
 	override bool HandlePickup(Inventory item){
-		if(UpgradedWeapon && UpgradedWeapon == item.GetClass() && !Cvar.GetCVar("pb_keepweapons", owner.player).GetBool()){
-			if(WeaponUpgradeKeepCvar && Cvar.GetCVar(WeaponUpgradeKeepCvar, owner.player).GetBool() == false){
-				While(owner && self.amount > 0){owner.DropInventory(self,1);}
-			}
-		}else if(
-			!Cvar.GetCVar("pb_keepweapons", owner.player).GetBool()
-			&&
-			PB_WeaponBase(item) && PB_WeaponBase(item).UpgradedWeapon && PB_WeaponBase(item).UpgradedWeapon == self.GetClass()
-			&&
-			(PB_WeaponBase(item).WeaponUpgradeKeepCvar && Cvar.GetCVar(PB_WeaponBase(item).WeaponUpgradeKeepCvar, owner.player).GetBool() == false)
-		){
-			let wp = weapon(item);
-			bool weapGone = false;
-			if(wp){
-				//if the weapon actually gives you ammo, give that ammo
-				//this checks both ammo1 and ammo2, just in case
-				if(wp.AmmoType1 != null && wp.AmmoGive1 > 0){
-					ammo amu1 = ammo(owner.findinventory(wp.ammotype1));
-					int left1 = owner.GetAmmoCapacity(amu1.GetClass()) - amu1.amount;
-					if(left1 > 0){
-						weapGone = true;
-						owner.giveinventory(wp.ammotype1,wp.AmmoGive1);
+		if(item is "PB_WeaponBase"){
+			if(UpgradedWeapon && UpgradedWeapon == item.GetClass() && !Cvar.GetCVar("pb_keepweapons", owner.player).GetBool()){
+				if(WeaponUpgradeKeepCvar && Cvar.GetCVar(WeaponUpgradeKeepCvar, owner.player).GetBool() == false){
+					While(owner && self.amount > 0){owner.DropInventory(self,1);}
+				}
+			}else if(
+				!Cvar.GetCVar("pb_keepweapons", owner.player).GetBool()
+				&&
+				PB_WeaponBase(item) && PB_WeaponBase(item).UpgradedWeapon && PB_WeaponBase(item).UpgradedWeapon == self.GetClass()
+				&&
+				(PB_WeaponBase(item).WeaponUpgradeKeepCvar && Cvar.GetCVar(PB_WeaponBase(item).WeaponUpgradeKeepCvar, owner.player).GetBool() == false)
+			){
+				let wp = weapon(item);
+				bool weapGone = false;
+				if(wp){
+					//if the weapon actually gives you ammo, give that ammo
+					//this checks both ammo1 and ammo2, just in case
+					if(wp.AmmoType1 != null && wp.AmmoGive1 > 0){
+						ammo amu1 = ammo(owner.findinventory(wp.ammotype1));
+						int left1 = owner.GetAmmoCapacity(amu1.GetClass()) - amu1.amount;
+						if(left1 > 0){
+							weapGone = true;
+							owner.giveinventory(wp.ammotype1,wp.AmmoGive1);
+						}
+					}
+					if(wp.AmmoType2 != null && wp.AmmoGive2 > 0){
+						ammo amu2 = ammo(owner.findinventory(wp.ammotype2));
+						int left2 = owner.GetAmmoCapacity(amu2.GetClass()) - amu2.amount;
+						if(left2 > 0){
+							weapGone = true;
+							owner.giveinventory(wp.ammotype2,wp.AmmoGive2);
+						}
 					}
 				}
-				if(wp.AmmoType2 != null && wp.AmmoGive2 > 0){
-					ammo amu2 = ammo(owner.findinventory(wp.ammotype2));
-					int left2 = owner.GetAmmoCapacity(amu2.GetClass()) - amu2.amount;
-					if(left2 > 0){
-						weapGone = true;
-						owner.giveinventory(wp.ammotype2,wp.AmmoGive2);
-					}
-				}
+				item.bPickupgood = weapGone;	//if ammo was given, make the weapon dissapear
+				return true;
 			}
-			item.bPickupgood = weapGone;	//if ammo was given, make the weapon dissapear
-			return true;
 		}
 		return Super.HandlePickup(item);
 	}
