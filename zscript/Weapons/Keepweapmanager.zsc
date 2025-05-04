@@ -75,11 +75,21 @@ class KeepWeapManager : inventory
 				return false; break;
 			//case 'PB_YellowSkull': owner.SetInventory("YellowSkull",1); return true; break;
 		}
-		
+		/*
 		//stop if the keep weapons option is enabled, no special handling needed
 		if(Cvar.GetCVar("pb_keepweapons", owner.player).GetBool())
 			return super.handlepickup(item);
-		
+		//Experimental, not even sure this is entirely needed.
+		if(item is "PB_WeaponBase"){
+			let downgradeWeapon = PB_WeaponBase(GetDefaultByType(item.GetClass())).DowngradeWeapon;
+			if(downgradeWeapon){
+				if(FindInventory(downgradeWeapon)){
+					While(FindInventory(downgradeWeapon) && FindInventory(downgradeWeapon).amount > 0){
+						DropInventory(FindInventory(downgradeWeapon));
+					}
+				}
+			}
+		}
 		name pk = item.getclassname();
 		if(pk == "PB_Pistol"){
 			if(Cvar.GetCVar("PB_KeepPistol", owner.player).GetBool()){
@@ -109,14 +119,7 @@ class KeepWeapManager : inventory
 				}
 			}
 		}
-				/*
-				user bool PB_KeepPistol = false;
-				user bool PB_KeepRevolver = false;
-				user bool PB_KeepSSG = false;
-				user bool PB_KeepCarbine = false;
-				*/
-		switch(pk)
-		{
+		switch(pk){
 			//easily expandable, ig
 			case 'PB_Carbine':
 			case 'PB_SSG':
@@ -165,6 +168,7 @@ class KeepWeapManager : inventory
 				return true;
 				break;
 		}
+		*/
 		return super.handlepickup(item);
 	}
 	
