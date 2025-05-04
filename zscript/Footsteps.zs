@@ -53,7 +53,7 @@ class PB_Footsteps : Actor
 			else
 				stepsound = GetFlatSound(Texman.GetName(toFollow.floorpic));
 			//sound volume is amplified by speed.
-			double soundVolume = isCrouched * (playerVel2D * 0.05); //multiplied by 0.12 because raw value is too high to be used as volume
+			double soundVolume = isCrouched * (playerVel2D * 0.99); //multiplied by 0.12 because raw value is too high to be used as volume
 			
 			//play the sound if it's non-null
 			if (stepsound != "none")
